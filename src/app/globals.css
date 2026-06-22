@@ -1,0 +1,90 @@
+@import "tailwindcss";
+
+:root {
+  /* Vivora design tokens */
+  --ink: #150e1a;       /* near-black, purple undertone — dark sections, primary text */
+  --plum: #4a1f5c;      /* roxo moderno — depth, secondary dark */
+  --rose: #d6486f;      /* rosa sofisticado — signature accent */
+  --rose-deep: #b22f56; /* pressed / hover state of rose */
+  --blush: #f7eef1;     /* warm off-white — light backgrounds */
+  --white: #ffffff;
+  --graphite: #2b232f;  /* soft black for body copy on light bg */
+  --mist: #cdb9c4;      /* muted divider / border tone */
+
+  --font-display: var(--font-unbounded);
+  --font-body: var(--font-inter);
+  --font-mono: var(--font-space-mono);
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-plum: var(--plum);
+  --color-rose: var(--rose);
+  --color-rose-deep: var(--rose-deep);
+  --color-blush: var(--blush);
+  --color-white: var(--white);
+  --color-graphite: var(--graphite);
+  --color-mist: var(--mist);
+
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-mono: var(--font-mono);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--blush);
+  color: var(--graphite);
+  font-family: var(--font-body);
+}
+
+/* Signature element: the Pulse — a continuous trace motif used as section
+   dividers, active-nav underline, and loading state. Represents rhythm,
+   training consistency, a heartbeat under exertion. */
+.pulse-rule {
+  position: relative;
+  height: 2px;
+  width: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--mist) 15%,
+    var(--mist) 85%,
+    transparent 100%
+  );
+}
+
+.pulse-rule::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--rose), var(--plum));
+  clip-path: polygon(
+    0% 50%, 8% 50%, 11% 20%, 14% 80%, 17% 50%, 24% 50%,
+    100% 50%, 100% 50%, 0% 50%
+  );
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pulse-anim {
+    animation: pulse-trace 2.2s ease-in-out infinite;
+  }
+}
+
+@keyframes pulse-trace {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}
+
+.tracking-display {
+  letter-spacing: 0.02em;
+}
+
+/* Visible keyboard focus everywhere, including custom components */
+:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 3px;
+}
