@@ -8,28 +8,24 @@ export default function LoginPage() {
   const [mostrarSenha, setMostrarSenha] = useState(false);
   const [aba, setAba] = useState<"entrar" | "criar">("entrar");
 
+  const titulo = aba === "entrar" ? "Bem-vinda de volta." : "Crie sua conta.";
+
   return (
     <div className="flex min-h-[calc(100vh-72px)] items-center justify-center px-5 py-16">
       <div className="w-full max-w-md">
 
-        {/* Eyebrow */}
         <p className="font-mono text-xs uppercase tracking-[0.2em] text-rose-deep mb-4 text-center">
           Área da cliente
         </p>
 
-        {/* Título */}
-        <h1 className="font-display text-4xl tracking-display text-ink text-center mb-2 whitespace-pre-line">
-          {aba === "entrar" ? "Bem-vinda
-de volta." : "Crie sua
-conta."}
+        <h1 className="font-display text-4xl tracking-display text-ink text-center mb-2">
+          {titulo}
         </h1>
 
-        {/* Pulse rule decorativo */}
         <div className="flex justify-center mt-4 mb-10">
           <div className="pulse-rule pulse-anim w-28" />
         </div>
 
-        {/* Tabs */}
         <div className="flex rounded-2xl bg-white/60 p-1 mb-8 border border-mist/40">
           {(["entrar", "criar"] as const).map((tab) => (
             <button
@@ -46,7 +42,6 @@ conta."}
           ))}
         </div>
 
-        {/* Form */}
         <div className="flex flex-col gap-4">
           {aba === "criar" && (
             <div className="flex flex-col gap-1.5">
@@ -78,10 +73,7 @@ conta."}
                 Senha
               </label>
               {aba === "entrar" && (
-                <Link
-                  href="#"
-                  className="font-mono text-[11px] text-rose-deep hover:underline"
-                >
+                <Link href="#" className="font-mono text-[11px] text-rose-deep hover:underline">
                   Esqueci a senha
                 </Link>
               )}
@@ -124,24 +116,18 @@ conta."}
           </button>
         </div>
 
-        {/* Divider */}
         <div className="my-8 flex items-center gap-4">
           <div className="h-px flex-1 bg-mist/40" />
           <span className="font-mono text-[11px] uppercase tracking-[0.15em] text-graphite/40">ou</span>
           <div className="h-px flex-1 bg-mist/40" />
         </div>
 
-        {/* Continue sem login */}
         <div className="text-center">
-          <Link
-            href="/loja"
-            className="font-mono text-xs text-graphite/50 hover:text-rose-deep transition"
-          >
+          <Link href="/loja" className="font-mono text-xs text-graphite/50 hover:text-rose-deep transition">
             Continuar sem criar conta →
           </Link>
         </div>
 
-        {/* Nota de segurança */}
         <p className="mt-10 text-center font-mono text-[10px] uppercase tracking-[0.15em] text-graphite/30">
           Compra 100% segura · Dados protegidos
         </p>
