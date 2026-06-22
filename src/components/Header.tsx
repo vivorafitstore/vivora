@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ShoppingBag, Menu, X } from "lucide-react";
+import { ShoppingBag, Menu, X, User } from "lucide-react";
 import { useState } from "react";
 import { useCart } from "@/context/CartContext";
 
@@ -45,6 +45,17 @@ export function Header() {
 
         <div className="flex items-center gap-4">
           <Link
+            href="/login"
+            aria-label="Entrar na conta"
+            className={`hidden md:flex items-center gap-1 text-sm transition ${
+              pathname === "/login" ? "text-rose" : "text-graphite/70 hover:text-ink"
+            }`}
+          >
+            <User className="h-4 w-4" />
+            <span className="font-mono text-[11px] uppercase tracking-[0.15em]">Entrar</span>
+          </Link>
+
+          <Link
             href="/carrinho"
             aria-label="Abrir carrinho"
             className="relative flex items-center gap-1 text-ink"
@@ -78,6 +89,13 @@ export function Header() {
               {link.label}
             </Link>
           ))}
+          <Link
+            href="/login"
+            className="py-2 text-sm text-graphite/80 border-t border-mist/30 mt-1 pt-3"
+            onClick={() => setMenuAberto(false)}
+          >
+            Entrar / Criar conta
+          </Link>
         </nav>
       )}
     </header>
