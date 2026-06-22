@@ -21,8 +21,12 @@ export function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-mist/40 bg-blush/90 backdrop-blur">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-4">
-        <Link href="/" className="font-display text-lg tracking-display text-ink">
-          VIVORA
+        <Link href="/" className="flex items-center">
+          <img
+            src="/images/logo-vivora-black.png"
+            alt="Vivora"
+            className="h-7 w-auto md:h-8"
+          />
         </Link>
 
         <nav className="hidden items-center gap-7 md:flex">

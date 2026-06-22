@@ -53,11 +53,12 @@ export default function LoginPage() {
         />
 
         {/* Logo */}
-        <Link
-          href="/"
-          className="absolute left-12 top-12 z-10 font-display text-2xl tracking-display text-white"
-        >
-          VIVORA
+        <Link href="/" className="absolute left-12 top-12 z-10">
+          <img
+            src="/images/logo-vivora-white.png"
+            alt="Vivora"
+            className="h-7 w-auto"
+          />
         </Link>
 
         {/* Conteúdo ancorado na base — sem espaço vazio */}

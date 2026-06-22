@@ -5,7 +5,11 @@ export function Footer() {
     <footer className="mt-24 border-t border-mist/40 bg-ink text-blush">
       <div className="mx-auto grid max-w-6xl gap-10 px-5 py-14 md:grid-cols-4">
         <div>
-          <p className="font-display text-lg tracking-display">VIVORA</p>
+          <img
+            src="/images/logo-vivora-white.png"
+            alt="Vivora"
+            className="h-6 w-auto"
+          />
           <p className="mt-3 max-w-xs text-sm text-blush/70">
             Roupa de treino para quem constrói força em casa, no seu ritmo, todos os dias.
           </p>
