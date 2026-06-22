@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Unbounded, Inter, Space_Mono } from "next/font/google";
+import { Unbounded, DM_Sans, Space_Mono } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import { Header } from "@/components/Header";
@@ -11,9 +11,10 @@ const unbounded = Unbounded({
   weight: ["500", "700", "800"],
 });
 
-const inter = Inter({
-  variable: "--font-inter",
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
   subsets: ["latin"],
+  weight: ["300", "400", "500", "600"],
 });
 
 const spaceMono = Space_Mono({
@@ -37,7 +38,7 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${unbounded.variable} ${inter.variable} ${spaceMono.variable} h-full antialiased`}
+      className={`${unbounded.variable} ${dmSans.variable} ${spaceMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-body">
         <CartProvider>
