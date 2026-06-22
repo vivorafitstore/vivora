@@ -14,10 +14,12 @@ export function CatalogClient() {
   const searchParams = useSearchParams();
   const categoriaInicial = searchParams.get("categoria") as Product["categoria"] | null;
 
+  const buscaInicial = searchParams.get("busca") ?? "";
+
   const [categoriaAtiva, setCategoriaAtiva] = useState<Product["categoria"] | "todas">(
     categoriaInicial ?? "todas"
   );
-  const [busca, setBusca] = useState("");
+  const [busca, setBusca] = useState(buscaInicial);
   const [ordenacao, setOrdenacao] = useState<Ordenacao>("relevancia");
 
   const resultado = useMemo(() => {
