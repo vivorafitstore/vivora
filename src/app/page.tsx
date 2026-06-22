@@ -1,8 +1,35 @@
 import Link from "next/link";
-import { ArrowRight, Truck, ShieldCheck, RotateCcw, Star } from "lucide-react";
+import { Truck, ShieldCheck, RotateCcw, Star } from "lucide-react";
 import { products, reviews } from "@/lib/products";
 import { ProductCard } from "@/components/ProductCard";
-import { ProductVisual } from "@/components/ProductVisual";
+import { HeroSlider, type HeroSlide } from "@/components/HeroSlider";
+
+const heroSlides: HeroSlide[] = [
+  {
+    imagem: "/images/hero/slide-1.jpg",
+    kicker: "Treino em casa · Força todo dia",
+    titulo: "Sua disciplina tem um ritmo.",
+    texto:
+      "Roupa de treino feita para quem constrói força sem sair de casa — cintura que sustenta, tecido que acompanha cada repetição, presença em cada série.",
+    cta: { label: "Ver coleção", href: "/loja" },
+  },
+  {
+    imagem: "/images/hero/slide-2.jpg",
+    kicker: "Nova coleção",
+    titulo: "Conjuntos para todo o seu treino.",
+    texto:
+      "Peças pensadas em conjunto, do aquecimento ao alongamento, com tecido que acompanha cada movimento.",
+    cta: { label: "Ver conjuntos", href: "/loja?categoria=conjuntos" },
+  },
+  {
+    imagem: "/images/hero/slide-3.jpg",
+    kicker: "Mais vendido",
+    titulo: "Leggings que sustentam cada série.",
+    texto:
+      "Compressão certa, cintura alta e tecido que não marca — feita para o treino e para o seu dia.",
+    cta: { label: "Ver leggings", href: "/loja?categoria=leggings" },
+  },
+];
 
 const beneficios = [
   { icone: Truck, titulo: "Frete grátis", texto: "Em compras acima de R$ 250 para todo o Brasil." },
@@ -34,41 +61,7 @@ export default function HomePage() {
   return (
     <div className="flex flex-col">
       {/* Hero */}
-      <section className="mx-auto grid max-w-6xl gap-10 px-5 pb-16 pt-12 md:grid-cols-2 md:items-center md:pt-20">
-        <div className="flex flex-col gap-6">
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-rose-deep">
-            Treino em casa · Força todo dia
-          </p>
-          <h1 className="font-display text-4xl leading-[1.05] tracking-display text-ink md:text-6xl">
-            Sua disciplina
-            <br />
-            tem um ritmo.
-          </h1>
-          <p className="max-w-md text-base text-graphite/75">
-            Roupa de treino feita para quem constrói força sem sair de casa — cintura que
-            sustenta, tecido que acompanha cada repetição, presença em cada série.
-          </p>
-          <div className="flex flex-wrap items-center gap-4">
-            <Link
-              href="/loja"
-              className="inline-flex items-center gap-2 rounded-xl bg-ink px-6 py-4 font-display text-sm tracking-display text-white transition hover:bg-plum"
-            >
-              Ver coleção <ArrowRight className="h-4 w-4" />
-            </Link>
-            <div className="pulse-rule pulse-anim w-28" />
-          </div>
-        </div>
-
-        <div className="relative grid grid-cols-2 gap-4">
-          <ProductVisual
-            paleta={["#4a1f5c", "#d6486f"]}
-            nome="Coleção Vivora"
-            className="col-span-2 aspect-[16/9]"
-          />
-          <ProductVisual paleta={["#150e1a", "#4a1f5c"]} nome="Conjuntos" className="aspect-square" />
-          <ProductVisual paleta={["#d6486f", "#f7eef1"]} nome="Leggings" className="aspect-square" />
-        </div>
-      </section>
+      <HeroSlider slides={heroSlides} />
 
       <div className="mx-auto max-w-6xl px-5">
         <div className="pulse-rule" />
