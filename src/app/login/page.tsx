@@ -26,29 +26,43 @@ export default function LoginPage() {
   return (
     <div className="grid min-h-[calc(100vh-72px)] lg:grid-cols-2">
       {/* Painel editorial — visível em telas grandes */}
-      <div className="relative hidden overflow-hidden lg:flex lg:flex-col lg:justify-between bg-ink px-12 py-14">
+      <div className="relative hidden overflow-hidden lg:flex lg:flex-col lg:justify-end bg-ink px-12 py-12">
+        {/* Foto de fundo */}
+        <img
+          src="/images/login-hero.jpg"
+          alt="Mulher treinando em casa com vestimenta Vivora"
+          className="absolute inset-0 h-full w-full object-cover object-[center_20%]"
+        />
+
+        {/* Opacidade preta + degrade de marca para legibilidade do texto */}
+        <div className="pointer-events-none absolute inset-0 bg-black/45" />
         <div
-          className="pointer-events-none absolute inset-0 opacity-90"
+          className="pointer-events-none absolute inset-0"
           style={{
             background:
-              "linear-gradient(155deg, var(--plum) 0%, var(--ink) 55%, var(--rose-deep) 130%)",
+              "linear-gradient(180deg, rgba(21,14,26,0.15) 0%, rgba(21,14,26,0.25) 35%, rgba(21,14,26,0.94) 100%)",
           }}
         />
         <div
-          className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full opacity-30 blur-3xl"
-          style={{ background: "var(--rose)" }}
-        />
-        <div
-          className="pointer-events-none absolute -bottom-32 -left-16 h-96 w-96 rounded-full opacity-20 blur-3xl"
-          style={{ background: "var(--rose-deep)" }}
+          className="pointer-events-none absolute inset-0 opacity-60"
+          style={{
+            background:
+              "linear-gradient(155deg, var(--plum) 0%, transparent 45%, var(--rose-deep) 140%)",
+            mixBlendMode: "multiply",
+          }}
         />
 
-        <div className="relative z-10">
-          <Link href="/" className="font-display text-2xl tracking-display text-white">
-            VIVORA
-          </Link>
+        {/* Logo */}
+        <Link
+          href="/"
+          className="absolute left-12 top-12 z-10 font-display text-2xl tracking-display text-white"
+        >
+          VIVORA
+        </Link>
 
-          <div className="mt-24 flex items-center gap-3">
+        {/* Conteúdo ancorado na base — sem espaço vazio */}
+        <div className="relative z-10 flex flex-col gap-7">
+          <div className="flex items-center gap-3">
             <svg
               viewBox="0 0 24 24"
               className="h-6 w-6 opacity-90"
@@ -64,18 +78,17 @@ export default function LoginPage() {
             </span>
           </div>
 
-          <p className="font-display text-4xl italic leading-[1.15] text-white mt-6 max-w-md">
+          <p className="font-display text-4xl italic leading-[1.15] text-white max-w-md">
             Força é um ritmo que você constrói todos os dias.
           </p>
 
-          <p className="mt-6 max-w-sm text-sm leading-relaxed text-white/55">
+          <p className="max-w-sm text-sm leading-relaxed text-white/60">
             Conjuntos, leggings e acessórios pensados para acompanhar sua
             disciplina — do treino em casa ao dia a dia.
           </p>
-        </div>
 
-        <div className="relative z-10 flex flex-col gap-5">
           <div className="h-px w-full bg-white/15" />
+
           <div className="flex items-center gap-8">
             <div>
               <p className="font-display text-2xl text-white">12k+</p>
