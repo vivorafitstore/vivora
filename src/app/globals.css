@@ -2,17 +2,17 @@
 
 :root {
   /* Vivora design tokens */
-  --ink: #150e1a;       /* near-black, purple undertone — dark sections, primary text */
-  --plum: #4a1f5c;      /* roxo moderno — depth, secondary dark */
-  --rose: #d6486f;      /* rosa sofisticado — signature accent */
-  --rose-deep: #b22f56; /* pressed / hover state of rose */
-  --blush: #f7eef1;     /* warm off-white — light backgrounds */
+  --ink: #150e1a;       /* near-black, purple undertone */
+  --plum: #4a1f5c;      /* roxo moderno */
+  --rose: #d6486f;      /* rosa sofisticado */
+  --rose-deep: #b22f56; /* pressed / hover */
+  --blush: #f7eef1;     /* warm off-white */
   --white: #ffffff;
-  --graphite: #2b232f;  /* soft black for body copy on light bg */
-  --mist: #cdb9c4;      /* muted divider / border tone */
+  --graphite: #2b232f;
+  --mist: #cdb9c4;
 
   --font-display: var(--font-unbounded);
-  --font-body: var(--font-inter);
+  --font-body: var(--font-dm-sans);
   --font-mono: var(--font-space-mono);
 }
 
@@ -39,11 +39,13 @@ body {
   background: var(--blush);
   color: var(--graphite);
   font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.65;
+  font-weight: 400;
+  letter-spacing: 0.01em;
 }
 
-/* Signature element: the Pulse — a continuous trace motif used as section
-   dividers, active-nav underline, and loading state. Represents rhythm,
-   training consistency, a heartbeat under exertion. */
+/* Pulse — motivo de ritmo e batimento */
 .pulse-rule {
   position: relative;
   height: 2px;
@@ -83,7 +85,6 @@ body {
   letter-spacing: 0.02em;
 }
 
-/* Visible keyboard focus everywhere, including custom components */
 :focus-visible {
   outline: 2px solid var(--rose);
   outline-offset: 3px;
