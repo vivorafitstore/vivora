@@ -11,8 +11,8 @@
   --graphite: #2b232f;
   --mist: #cdb9c4;
 
-  --font-display: var(--font-unbounded);
-  --font-body: var(--font-dm-sans);
+  --font-display: var(--font-fraunces);
+  --font-body: var(--font-plus-jakarta);
   --font-mono: var(--font-space-mono);
 }
 
@@ -82,7 +82,7 @@ body {
 }
 
 .tracking-display {
-  letter-spacing: 0.02em;
+  letter-spacing: -0.01em;
 }
 
 :focus-visible {
