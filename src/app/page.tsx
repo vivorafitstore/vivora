@@ -14,6 +14,22 @@ const heroSlides: HeroSlide[] = [
     cta: { label: "Ver promoção", href: "/loja" },
   },
   {
+    imagem: "/images/hero/slide-frete.jpg",
+    kicker: "Entrega rápida e rastreada",
+    titulo: "Seu pedido chega rápido, onde você estiver.",
+    texto:
+      "Frete rastreado para todo o Brasil — acompanhe cada etapa da entrega. Grátis em compras acima de R$ 300.",
+    cta: { label: "Ver coleção", href: "/loja" },
+  },
+  {
+    imagem: "/images/hero/slide-moda.jpg",
+    kicker: "Estilo e qualidade",
+    titulo: "Tecido que acompanha cada movimento.",
+    texto:
+      "Peças desenvolvidas com materiais de alta performance — compressão certa, toque suave e durabilidade para treinos intensos. Moda fitness que vai além da academia.",
+    cta: { label: "Ver coleção", href: "/loja" },
+  },
+  {
     imagem: "/images/hero/slide-1.jpg",
     kicker: "Treino em casa · Força todo dia",
     titulo: "Sua disciplina tem um ritmo.",
@@ -36,14 +52,6 @@ const heroSlides: HeroSlide[] = [
     texto:
       "Compressão certa, cintura alta e tecido que não marca — feita para o treino e para o seu dia.",
     cta: { label: "Ver leggings", href: "/loja?categoria=moda-fitness&item=leggings" },
-  },
-  {
-    imagem: "/images/hero/slide-frete.jpg",
-    kicker: "Entrega rápida e rastreada",
-    titulo: "Seu pedido chega rápido, onde você estiver.",
-    texto:
-      "Frete rastreado para todo o Brasil — acompanhe cada etapa da entrega. Grátis em compras acima de R$ 300.",
-    cta: { label: "Ver coleção", href: "/loja" },
   },
 ];
 
