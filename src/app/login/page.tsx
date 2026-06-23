@@ -24,7 +24,7 @@ export default function LoginPage() {
       : "Leve menos de um minuto para começar.";
 
   return (
-    <div className="grid min-h-[calc(100vh-72px)] lg:grid-cols-2">
+    <div className="grid h-full min-h-[calc(100vh-72px)] lg:grid-cols-2">
       {/* Painel editorial — visível em telas grandes */}
       <div className="relative hidden overflow-hidden lg:flex lg:flex-col lg:justify-end bg-ink px-12 py-12">
         {/* Foto de fundo */}

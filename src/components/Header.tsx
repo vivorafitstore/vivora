@@ -15,6 +15,8 @@ export function Header() {
   const [buscaAberta, setBuscaAberta] = useState(false);
   const [busca, setBusca] = useState("");
 
+  if (pathname?.startsWith("/admin")) return null;
+
   function buscar(e: React.FormEvent) {
     e.preventDefault();
     if (busca.trim()) {
