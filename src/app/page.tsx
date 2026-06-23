@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { Truck, ShieldCheck, RotateCcw, Star } from "lucide-react";
-import { products, reviews } from "@/lib/products";
-import { ProductCard } from "@/components/ProductCard";
+import { reviews } from "@/lib/products";
 import { HeroSlider, type HeroSlide } from "@/components/HeroSlider";
+import { FeaturedProducts } from "@/components/FeaturedProducts";
 
 const heroSlides: HeroSlide[] = [
   {
@@ -19,7 +19,7 @@ const heroSlides: HeroSlide[] = [
     titulo: "Conjuntos para todo o seu treino.",
     texto:
       "Peças pensadas em conjunto, do aquecimento ao alongamento, com tecido que acompanha cada movimento.",
-    cta: { label: "Ver conjuntos", href: "/loja?categoria=conjuntos" },
+    cta: { label: "Ver conjuntos", href: "/loja?categoria=moda-fitness&item=conjuntos" },
   },
   {
     imagem: "/images/hero/slide-3.jpg",
@@ -27,7 +27,7 @@ const heroSlides: HeroSlide[] = [
     titulo: "Leggings que sustentam cada série.",
     texto:
       "Compressão certa, cintura alta e tecido que não marca — feita para o treino e para o seu dia.",
-    cta: { label: "Ver leggings", href: "/loja?categoria=leggings" },
+    cta: { label: "Ver leggings", href: "/loja?categoria=moda-fitness&item=leggings" },
   },
 ];
 
@@ -56,8 +56,6 @@ const perguntas = [
 ];
 
 export default function HomePage() {
-  const destaques = products.filter((p) => p.destaque);
-
   return (
     <div className="flex flex-col">
       {/* Hero */}
@@ -88,11 +86,7 @@ export default function HomePage() {
             Ver tudo
           </Link>
         </div>
-        <div className="grid grid-cols-2 gap-4 md:grid-cols-4">
-          {destaques.map((produto) => (
-            <ProductCard key={produto.id} produto={produto} />
-          ))}
-        </div>
+        <FeaturedProducts />
       </section>
 
       {/* Faixa de marca */}

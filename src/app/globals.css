@@ -89,3 +89,20 @@ body {
   outline: 2px solid var(--rose);
   outline-offset: 3px;
 }
+
+.campo-input {
+  width: 100%;
+  border-radius: 0.75rem;
+  border: 1px solid color-mix(in srgb, var(--mist) 80%, transparent);
+  background: color-mix(in srgb, var(--blush) 35%, white);
+  padding: 0.65rem 1rem;
+  font-size: 0.875rem;
+  color: var(--ink);
+  outline: none;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.campo-input:focus {
+  border-color: var(--rose);
+  background: white;
+}

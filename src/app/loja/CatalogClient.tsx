@@ -1,29 +1,33 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { products, categoryLabels } from "@/lib/products";
+import { listarProdutos } from "@/lib/firestore-produtos";
+import { listarCategorias } from "@/lib/firestore-categorias";
 import { ProductCard } from "@/components/ProductCard";
-import { Product } from "@/lib/types";
+import { Product, Categoria } from "@/lib/types";
 
 type Ordenacao = "relevancia" | "menor-preco" | "maior-preco" | "novidades";
 
-const categorias = Object.entries(categoryLabels) as [Product["categoria"], string][];
-
 export function CatalogClient() {
   const searchParams = useSearchParams();
-  const categoriaInicial = searchParams.get("categoria") as Product["categoria"] | null;
-
+  const categoriaInicial = searchParams.get("categoria") ?? "todas";
   const buscaInicial = searchParams.get("busca") ?? "";
 
-  const [categoriaAtiva, setCategoriaAtiva] = useState<Product["categoria"] | "todas">(
-    categoriaInicial ?? "todas"
-  );
+  const [produtos, setProdutos] = useState<Product[] | null>(null);
+  const [categorias, setCategorias] = useState<Categoria[]>([]);
+  const [categoriaAtiva, setCategoriaAtiva] = useState(categoriaInicial);
   const [busca, setBusca] = useState(buscaInicial);
   const [ordenacao, setOrdenacao] = useState<Ordenacao>("relevancia");
 
+  useEffect(() => {
+    listarProdutos().then((lista) => setProdutos(lista.filter((p) => p.ativo !== false)));
+    listarCategorias().then(setCategorias);
+  }, []);
+
   const resultado = useMemo(() => {
-    let lista = [...products];
+    if (!produtos) return [];
+    let lista = [...produtos];
 
     if (categoriaAtiva !== "todas") {
       lista = lista.filter((p) => p.categoria === categoriaAtiva);
@@ -57,7 +61,7 @@ export function CatalogClient() {
     }
 
     return lista;
-  }, [categoriaAtiva, busca, ordenacao]);
+  }, [produtos, categoriaAtiva, busca, ordenacao]);
 
   return (
     <div className="mx-auto max-w-6xl px-5 py-10">
@@ -78,17 +82,17 @@ export function CatalogClient() {
           >
             Todas
           </button>
-          {categorias.map(([valor, label]) => (
+          {categorias.map((cat) => (
             <button
-              key={valor}
-              onClick={() => setCategoriaAtiva(valor)}
+              key={cat.id}
+              onClick={() => setCategoriaAtiva(cat.slug)}
               className={`rounded-full border px-4 py-1.5 text-sm transition ${
-                categoriaAtiva === valor
+                categoriaAtiva === cat.slug
                   ? "border-ink bg-ink text-white"
                   : "border-mist text-graphite hover:border-ink"
               }`}
             >
-              {label}
+              {cat.label}
             </button>
           ))}
         </div>
@@ -113,7 +117,9 @@ export function CatalogClient() {
         </div>
       </div>
 
-      {resultado.length === 0 ? (
+      {produtos === null ? (
+        <p className="font-mono text-xs text-graphite/45">Carregando produtos...</p>
+      ) : resultado.length === 0 ? (
         <div className="rounded-2xl bg-white/60 p-10 text-center">
           <p className="font-display text-sm tracking-display text-ink">
             Nenhum produto encontrado

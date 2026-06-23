@@ -3,16 +3,17 @@ import { getAuth } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
 
-// All values come from environment variables — never commit real keys.
-// Copy .env.local.example to .env.local and fill in the credentials from
-// your Firebase project settings (Project settings → General → Your apps).
+// Firebase Web config. These values are not secrets (they're public by
+// design — security comes from Firestore/Storage rules), but we still
+// allow overriding via env vars if you ever want a separate Firebase
+// project for staging.
 const firebaseConfig: FirebaseOptions = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY ?? "AIzaSyBBdK1o7LISQdi3_S0bMnDQJTCNIS9KTpU",
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN ?? "vivora-7ac32.firebaseapp.com",
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID ?? "vivora-7ac32",
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET ?? "vivora-7ac32.firebasestorage.app",
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID ?? "524556003046",
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID ?? "1:524556003046:web:1c67dd90a609c4f4393d27",
 };
 
 // Guard against re-initializing on hot reload / multiple imports.

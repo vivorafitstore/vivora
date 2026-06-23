@@ -43,6 +43,7 @@ export default function CarrinhoPage() {
             <ProductVisual
               paleta={item.paletaVisual}
               nome={item.nome}
+              imagemUrl={item.imagemCard}
               className="h-20 w-20 shrink-0"
             />
             <div className="flex-1">

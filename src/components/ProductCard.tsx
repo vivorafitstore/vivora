@@ -8,13 +8,14 @@ export function ProductCard({ produto }: { produto: Product }) {
 
   return (
     <Link
-      href={`/produto/${produto.slug}`}
+      href={`/produto?slug=${produto.slug}`}
       className="group flex flex-col gap-3 rounded-2xl p-3 transition hover:bg-white/70"
     >
       <div className="relative aspect-[4/5] w-full">
         <ProductVisual
           paleta={produto.paletaVisual}
           nome={produto.nome}
+          imagemUrl={produto.imagemCard}
           className="h-full w-full transition duration-500 group-hover:scale-[1.02]"
         />
         {produto.novidade && (

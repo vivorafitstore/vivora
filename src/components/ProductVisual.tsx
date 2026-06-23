@@ -2,16 +2,26 @@ interface ProductVisualProps {
   paleta: [string, string];
   nome: string;
   className?: string;
+  /** URL real da foto do produto (Firebase Storage). Se ausente, usa o gradiente. */
+  imagemUrl?: string;
 }
 
 /**
- * Stands in for a real product photo. The catalog has no photography yet,
- * so each product carries a `paletaVisual` pair (two hex tokens) and renders
- * as a soft diagonal gradient card with the Vivora pulse mark. Swapping this
- * for <Image src={produto.imagemUrl} /> once photos exist in Firebase
- * Storage is the only change needed — the rest of the layout is unaffected.
+ * Mostra a foto real do produto quando disponível (`imagemUrl`, vinda do
+ * Firebase Storage). Sem foto, cai no gradiente placeholder com a marca
+ * Vivora — útil para produtos recém-cadastrados sem fotos ainda.
  */
-export function ProductVisual({ paleta, nome, className = "" }: ProductVisualProps) {
+export function ProductVisual({ paleta, nome, className = "", imagemUrl }: ProductVisualProps) {
+  if (imagemUrl) {
+    return (
+      <img
+        src={imagemUrl}
+        alt={nome}
+        className={`rounded-2xl object-cover ${className}`}
+      />
+    );
+  }
+
   return (
     <div
       role="img"

@@ -6,9 +6,18 @@ import { useCart } from "@/context/CartContext";
 
 export function AddToCartButton({ produto }: { produto: Product }) {
   const { adicionarItem } = useCart();
-  const [varianteId, setVarianteId] = useState(produto.variantes[0].id);
+  const temVariantes = produto.variantes.length > 0;
+  const [varianteId, setVarianteId] = useState(produto.variantes[0]?.id ?? "");
   const [tamanho, setTamanho] = useState<string | null>(null);
   const [confirmado, setConfirmado] = useState(false);
+
+  if (!temVariantes) {
+    return (
+      <p className="rounded-xl bg-mist/30 px-4 py-3 text-sm text-graphite/60">
+        Produto sem variantes cadastradas.
+      </p>
+    );
+  }
 
   const variante = produto.variantes.find((v) => v.id === varianteId)!;
   const preco = produto.precoPromocional ?? produto.preco;
@@ -25,6 +34,7 @@ export function AddToCartButton({ produto }: { produto: Product }) {
       tamanho,
       quantidade: 1,
       paletaVisual: produto.paletaVisual,
+      imagemCard: produto.imagemCard,
     });
     setConfirmado(true);
     setTimeout(() => setConfirmado(false), 2200);

@@ -1,14 +1,7 @@
 // Domain types for the Vivora storefront.
-// These mirror the shape products/categories will eventually take in
-// Firestore, so swapping the mock data source for live queries later is a
-// drop-in change rather than a rewrite.
-
-export type ProductCategory =
-  | "leggings"
-  | "tops"
-  | "conjuntos"
-  | "acessorios"
-  | "calcados";
+// Produtos, categorias e pedidos agora vivem no Firestore — estes tipos
+// descrevem o formato dos documentos das coleções `produtos`, `categorias`
+// e `pedidos`.
 
 export interface ProductVariant {
   id: string;
@@ -21,7 +14,10 @@ export interface Product {
   id: string;
   slug: string;
   nome: string;
-  categoria: ProductCategory;
+  /** slug da categoria (coleção `categorias`) */
+  categoria: string;
+  /** slug da subcategoria, opcional */
+  subcategoria?: string;
   descricaoCurta: string;
   descricaoCompleta: string;
   beneficios: string[];
@@ -34,9 +30,54 @@ export interface Product {
   estoque: number;
   destaque?: boolean;
   novidade?: boolean;
-  /** Gradient tokens used by the placeholder visual until real product
-   *  photography is uploaded to Firebase Storage. */
+  ativo?: boolean;
+  /** URL da foto principal (card / capa), no Firebase Storage */
+  imagemCard?: string;
+  /** URLs das demais fotos do produto */
+  imagens?: string[];
+  /** Gradiente usado como placeholder visual enquanto não há foto real */
   paletaVisual: [string, string];
+  criadoEm?: number;
+  atualizadoEm?: number;
+}
+
+export interface Subcategoria {
+  slug: string;
+  label: string;
+}
+
+export interface Categoria {
+  id: string;
+  slug: string;
+  label: string;
+  ordem: number;
+  subcategorias: Subcategoria[];
+}
+
+export type StatusPedido = "pendente" | "pago" | "enviado" | "entregue" | "cancelado";
+
+export interface ItemPedido {
+  produtoId: string;
+  produtoNome: string;
+  variante?: string;
+  tamanho?: string;
+  quantidade: number;
+  precoUnitario: number;
+}
+
+export interface Pedido {
+  id: string;
+  clienteNome: string;
+  clienteEmail: string;
+  clienteTelefone?: string;
+  itens: ItemPedido[];
+  valorTotal: number;
+  status: StatusPedido;
+  codigoRastreio?: string;
+  transportadora?: string;
+  observacoes?: string;
+  criadoEm: number;
+  atualizadoEm?: number;
 }
 
 export interface CartItem {
@@ -49,6 +90,7 @@ export interface CartItem {
   tamanho: string;
   quantidade: number;
   paletaVisual: [string, string];
+  imagemCard?: string;
 }
 
 export interface Review {
