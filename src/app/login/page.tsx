@@ -24,9 +24,9 @@ export default function LoginPage() {
       : "Leva menos de um minuto para começar.";
 
   return (
-    <div className="grid h-full min-h-[calc(100vh-72px)] lg:grid-cols-2">
+    <div className="grid min-h-[calc(100vh-72px)] lg:grid-cols-2">
       {/* Painel editorial — visível em telas grandes */}
-      <div className="relative hidden overflow-hidden lg:flex lg:flex-col lg:justify-end bg-ink px-12 py-12">
+      <div className="relative hidden overflow-hidden lg:flex lg:flex-col lg:justify-end bg-ink px-12 py-12 self-stretch">
         <img
           src="/images/login-hero.jpg"
           alt="Pessoa treinando em casa com vestimenta Vivora"
@@ -129,7 +129,11 @@ export default function LoginPage() {
               <button
                 key={tab}
                 onClick={() => setAba(tab)}
-                className={}
+                className={`flex-1 rounded-full py-2.5 font-display text-xs tracking-display transition-all duration-200 ${
+                  aba === tab
+                    ? "bg-ink text-white shadow-sm"
+                    : "text-graphite/55 hover:text-ink"
+                }`}
               >
                 {tab === "entrar" ? "Entrar" : "Criar conta"}
               </button>
