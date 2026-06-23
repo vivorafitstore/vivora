@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
@@ -9,6 +9,14 @@ import { Product } from "@/lib/types";
 import { ProductForm } from "@/components/admin/ProductForm";
 
 export default function EditarProdutoPage() {
+  return (
+    <Suspense fallback={null}>
+      <EditarProdutoContent />
+    </Suspense>
+  );
+}
+
+function EditarProdutoContent() {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
   const [produto, setProduto] = useState<Product | null | undefined>(undefined);

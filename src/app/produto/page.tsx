@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { Star, ArrowLeft } from "lucide-react";
@@ -12,6 +12,14 @@ import { formatarPreco } from "@/lib/format";
 import { Product } from "@/lib/types";
 
 export default function ProdutoPage() {
+  return (
+    <Suspense fallback={null}>
+      <ProdutoContent />
+    </Suspense>
+  );
+}
+
+function ProdutoContent() {
   const searchParams = useSearchParams();
   const slug = searchParams.get("slug");
 
