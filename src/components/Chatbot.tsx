@@ -112,9 +112,9 @@ const menus: Record<
     ],
   },
   suporte: {
-    question: "📞 Precisa de ajuda personalizada?\nNossa equipe está pronta para atender você.",
+    question: "📧 Precisa de ajuda personalizada?\nNossa equipe está pronta para atender você.",
     buttons: [
-      { label: "💬 Falar com Suporte", reply: "Falar com Suporte" },
+      { label: "✉️ Enviar e-mail", reply: "Falar com Suporte" },
       { label: "⬅️ Voltar", reply: "Voltar ao menu", next: "main" },
     ],
   },
@@ -170,7 +170,7 @@ const replies: Record<string, string> = {
   "Loja física": "🏪 Atualmente operamos exclusivamente online.",
   Contato:
     "📧 Nossa equipe está disponível para ajudar através dos canais de atendimento da loja.",
-  "Falar com Suporte": "__whatsapp__",
+  "Falar com Suporte": "__email__",
 };
 
 function now() {
@@ -241,15 +241,14 @@ export function Chatbot() {
     setTyping(true);
     setTimeout(() => {
       setTyping(false);
-      if (reply === "__whatsapp__") {
+      if (reply === "__email__") {
         addMsg({
           from: "bot",
-          text: "💬 Clique no botão abaixo para falar diretamente com nossa equipe no WhatsApp:",
+          text: "✉️ Você pode nos contatar pelo e-mail:\n\nvivorafitstore@gmail.com\n\nNossa equipe responde em até 1 dia útil. 💜",
           time: now(),
         });
-        // abre WhatsApp após pequeno delay
         setTimeout(() => {
-          window.open("https://wa.me/SEUNUMERO", "_blank");
+          window.open("mailto:vivorafitstore@gmail.com", "_blank");
         }, 400);
       } else {
         addMsg({ from: "bot", text: reply, time: now() });
