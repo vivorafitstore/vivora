@@ -17,24 +17,22 @@ export default function LoginPage() {
   const [mostrarSenha, setMostrarSenha] = useState(false);
   const [aba, setAba] = useState<"entrar" | "criar">("entrar");
 
-  const titulo = aba === "entrar" ? "Bem-vinda de volta." : "Crie sua conta.";
+  const titulo = aba === "entrar" ? "Bem-vindo(a) de volta." : "Crie sua conta.";
   const subtitulo =
     aba === "entrar"
       ? "Entre para acompanhar seus pedidos e favoritos."
-      : "Leve menos de um minuto para começar.";
+      : "Leva menos de um minuto para começar.";
 
   return (
     <div className="grid h-full min-h-[calc(100vh-72px)] lg:grid-cols-2">
       {/* Painel editorial — visível em telas grandes */}
       <div className="relative hidden overflow-hidden lg:flex lg:flex-col lg:justify-end bg-ink px-12 py-12">
-        {/* Foto de fundo */}
         <img
           src="/images/login-hero.jpg"
-          alt="Mulher treinando em casa com vestimenta Vivora"
+          alt="Pessoa treinando em casa com vestimenta Vivora"
           className="absolute inset-0 h-full w-full object-cover object-[center_20%]"
         />
 
-        {/* Opacidade preta + degrade de marca para legibilidade do texto */}
         <div className="pointer-events-none absolute inset-0 bg-black/45" />
         <div
           className="pointer-events-none absolute inset-0"
@@ -52,7 +50,6 @@ export default function LoginPage() {
           }}
         />
 
-        {/* Logo */}
         <Link href="/" className="absolute left-12 top-12 z-10">
           <img
             src="/images/logo-vivora-white.png"
@@ -61,7 +58,6 @@ export default function LoginPage() {
           />
         </Link>
 
-        {/* Conteúdo ancorado na base — sem espaço vazio */}
         <div className="relative z-10 flex flex-col gap-7">
           <div className="flex items-center gap-3">
             <svg
@@ -94,7 +90,7 @@ export default function LoginPage() {
             <div>
               <p className="font-display text-2xl text-white">12k+</p>
               <p className="text-[10px] uppercase tracking-[0.15em] text-white/45 mt-1">
-                Clientes ativas
+                Clientes
               </p>
             </div>
             <div>
@@ -119,7 +115,7 @@ export default function LoginPage() {
           <div className="mb-10 text-center lg:text-left">
             <p className="text-xs uppercase tracking-[0.2em] text-rose-deep mb-4 flex items-center justify-center gap-2 lg:justify-start">
               <Sparkles className="h-3.5 w-3.5" />
-              Área da cliente
+              Área do cliente
             </p>
 
             <h1 className="font-display text-4xl tracking-display text-ink mb-2">
@@ -133,11 +129,7 @@ export default function LoginPage() {
               <button
                 key={tab}
                 onClick={() => setAba(tab)}
-                className={`flex-1 rounded-full py-2.5 font-display text-xs tracking-display transition-all duration-200 ${
-                  aba === tab
-                    ? "bg-ink text-white shadow-sm"
-                    : "text-graphite/55 hover:text-ink"
-                }`}
+                className={}
               >
                 {tab === "entrar" ? "Entrar" : "Criar conta"}
               </button>
