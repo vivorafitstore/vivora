@@ -37,10 +37,18 @@ const heroSlides: HeroSlide[] = [
       "Compressão certa, cintura alta e tecido que não marca — feita para o treino e para o seu dia.",
     cta: { label: "Ver leggings", href: "/loja?categoria=moda-fitness&item=leggings" },
   },
+  {
+    imagem: "/images/hero/slide-frete.jpg",
+    kicker: "Entrega rápida e rastreada",
+    titulo: "Seu pedido chega rápido, onde você estiver.",
+    texto:
+      "Frete rastreado para todo o Brasil — acompanhe cada etapa da entrega. Grátis em compras acima de R$ 300.",
+    cta: { label: "Ver coleção", href: "/loja" },
+  },
 ];
 
 const beneficios = [
-  { icone: Truck, titulo: "Frete grátis", texto: "Em compras acima de R$ 250 para todo o Brasil." },
+  { icone: Truck, titulo: "Frete grátis", texto: "Em compras acima de R$ 300 para todo o Brasil, entrega rastreada." },
   { icone: RotateCcw, titulo: "Troca fácil", texto: "Até 30 dias para trocar tamanho ou cor, sem custo." },
   { icone: ShieldCheck, titulo: "Compra segura", texto: "Pagamento protegido em todas as etapas." },
 ];
