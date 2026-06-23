@@ -96,7 +96,7 @@ export default function HomePage() {
             Vivora existe por isso
           </p>
           <p className="mt-4 font-display text-2xl leading-snug tracking-display md:text-3xl">
-            Treinar em casa não é treinar menos. É treinar no seu ritmo, com a sua roupa
+            Treinar em casa não é treinar menos. É treinar no seu ritmo, com a roupa certa
             sustentando cada decisão de continuar.
           </p>
         </div>
