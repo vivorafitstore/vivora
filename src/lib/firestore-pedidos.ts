@@ -6,9 +6,10 @@ import {
   orderBy,
   query,
   updateDoc,
+  where,
 } from "firebase/firestore";
 import { db } from "./firebase";
-import { Pedido, StatusPedido } from "./types";
+import { Pedido, StatusPedido, StepRastreio } from "./types";
 
 const COL = "pedidos";
 
@@ -45,6 +46,22 @@ export async function atualizarRastreioPedido(
     ...(transportadora ? { transportadora } : {}),
     atualizadoEm: Date.now(),
   });
+}
+
+export async function obterPedidoPorRastreio(codigo: string): Promise<Pedido | null> {
+  const snap = await getDocs(
+    query(collection(db, COL), where("codigoRastreio", "==", codigo))
+  );
+  if (snap.empty) return null;
+  const d = snap.docs[0];
+  return { id: d.id, ...(d.data() as Omit<Pedido, "id">) };
+}
+
+export async function atualizarStepsPedido(
+  id: string,
+  stepsRastreio: StepRastreio[]
+): Promise<void> {
+  await updateDoc(doc(db, COL, id), { stepsRastreio, atualizadoEm: Date.now() });
 }
 
 export async function atualizarObservacoesPedido(

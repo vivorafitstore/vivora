@@ -56,6 +56,14 @@ export interface Categoria {
 
 export type StatusPedido = "pendente" | "pago" | "enviado" | "entregue" | "cancelado";
 
+export interface StepRastreio {
+  id: string;
+  etapa: string;
+  descricao: string;
+  local: string;
+  criadoEm: number;
+}
+
 export interface ItemPedido {
   produtoId: string;
   produtoNome: string;
@@ -75,6 +83,7 @@ export interface Pedido {
   status: StatusPedido;
   codigoRastreio?: string;
   transportadora?: string;
+  stepsRastreio?: StepRastreio[];
   observacoes?: string;
   criadoEm: number;
   atualizadoEm?: number;
