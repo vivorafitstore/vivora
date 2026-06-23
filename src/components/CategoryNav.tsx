@@ -18,16 +18,11 @@ function useCategoriasPublicas() {
   return categorias;
 }
 
-/** Navegação desktop — cada categoria expande as subcategorias ao passar o mouse. */
 export function CategoryNavDesktop() {
   const categorias = useCategoriasPublicas();
 
   return (
     <nav className="hidden items-center gap-6 lg:flex">
-      <Link href="/loja" className="text-sm text-graphite/80 transition hover:text-ink">
-        Loja
-      </Link>
-
       {categorias.map((cat) => (
         <div key={cat.id} className="group relative flex h-full items-center">
           <button
@@ -70,16 +65,11 @@ export function CategoryNavDesktop() {
   );
 }
 
-/** Navegação mobile — categorias em acordeão (details/summary). */
 export function CategoryNavMobile({ onNavigate }: { onNavigate?: () => void }) {
   const categorias = useCategoriasPublicas();
 
   return (
     <nav className="flex flex-col gap-1">
-      <Link href="/loja" className="py-2 text-sm text-graphite/80" onClick={onNavigate}>
-        Loja
-      </Link>
-
       {categorias.map((cat) => (
         <details key={cat.id} className="group border-t border-mist/30 py-1">
           <summary className="flex cursor-pointer list-none items-center justify-between py-2 text-sm text-graphite/80">
