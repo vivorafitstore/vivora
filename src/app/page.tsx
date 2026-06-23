@@ -29,30 +29,6 @@ const heroSlides: HeroSlide[] = [
       "Peças desenvolvidas com materiais de alta performance — compressão certa, toque suave e durabilidade para treinos intensos. Moda fitness que vai além da academia.",
     cta: { label: "Ver coleção", href: "/loja" },
   },
-  {
-    imagem: "/images/hero/slide-1.jpg",
-    kicker: "Treino em casa · Força todo dia",
-    titulo: "Sua disciplina tem um ritmo.",
-    texto:
-      "Roupa de treino feita para quem constrói força sem sair de casa — cintura que sustenta, tecido que acompanha cada repetição, presença em cada série.",
-    cta: { label: "Ver coleção", href: "/loja" },
-  },
-  {
-    imagem: "/images/hero/slide-2.jpg",
-    kicker: "Nova coleção",
-    titulo: "Conjuntos para todo o seu treino.",
-    texto:
-      "Peças pensadas em conjunto, do aquecimento ao alongamento, com tecido que acompanha cada movimento.",
-    cta: { label: "Ver conjuntos", href: "/loja?categoria=moda-fitness&item=conjuntos" },
-  },
-  {
-    imagem: "/images/hero/slide-3.jpg",
-    kicker: "Mais vendido",
-    titulo: "Leggings que sustentam cada série.",
-    texto:
-      "Compressão certa, cintura alta e tecido que não marca — feita para o treino e para o seu dia.",
-    cta: { label: "Ver leggings", href: "/loja?categoria=moda-fitness&item=leggings" },
-  },
 ];
 
 const beneficios = [
