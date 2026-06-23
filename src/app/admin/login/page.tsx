@@ -32,7 +32,7 @@ export default function AdminLoginPage() {
       <div className="w-full max-w-sm">
         <div className="mb-8 flex flex-col items-center gap-3 text-center">
           <img src="/images/logo-vivora-black.png" alt="Vivora" className="h-7 w-auto" />
-          <p className="flex items-center gap-1.5 font-mono text-[11px] uppercase tracking-[0.15em] text-graphite/45">
+          <p className="flex items-center gap-1.5 text-[11px] uppercase tracking-[0.15em] text-graphite/45">
             <ShieldCheck className="h-3.5 w-3.5" />
             Painel administrativo
           </p>
@@ -43,7 +43,7 @@ export default function AdminLoginPage() {
           className="flex flex-col gap-4 rounded-3xl border border-mist/40 bg-white p-7 shadow-[0_8px_30px_rgba(74,31,92,0.07)]"
         >
           <div className="flex flex-col gap-1.5">
-            <label className="font-mono text-[11px] uppercase tracking-[0.15em] text-graphite/60">
+            <label className="text-[11px] uppercase tracking-[0.15em] text-graphite/60">
               E-mail
             </label>
             <div className="relative">
@@ -60,7 +60,7 @@ export default function AdminLoginPage() {
           </div>
 
           <div className="flex flex-col gap-1.5">
-            <label className="font-mono text-[11px] uppercase tracking-[0.15em] text-graphite/60">
+            <label className="text-[11px] uppercase tracking-[0.15em] text-graphite/60">
               Senha
             </label>
             <div className="relative">
@@ -87,7 +87,7 @@ export default function AdminLoginPage() {
           </button>
         </form>
 
-        <p className="mt-6 text-center font-mono text-[11px] text-graphite/35">
+        <p className="mt-6 text-center text-[11px] text-graphite/35">
           Acesso restrito à equipe Vivora.
         </p>
       </div>

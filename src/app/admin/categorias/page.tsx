@@ -123,7 +123,7 @@ export default function AdminCategoriasPage() {
       </form>
 
       {carregando ? (
-        <p className="font-mono text-xs text-graphite/45">Carregando categorias...</p>
+        <p className="text-xs text-graphite/45">Carregando categorias...</p>
       ) : categorias.length === 0 ? (
         <p className="rounded-2xl border border-mist/40 bg-white p-6 text-sm text-graphite/60">
           Nenhuma categoria cadastrada ainda. Clique em &quot;Importar categorias padrão&quot;
@@ -176,7 +176,7 @@ export default function AdminCategoriasPage() {
                 )}
               </div>
 
-              <p className="mt-1 font-mono text-[10px] uppercase tracking-[0.12em] text-graphite/35">
+              <p className="mt-1 text-[10px] uppercase tracking-[0.12em] text-graphite/35">
                 /loja?categoria={cat.slug}
               </p>
 

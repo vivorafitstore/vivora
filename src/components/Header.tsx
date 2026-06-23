@@ -57,7 +57,7 @@ export function Header() {
             }`}
           >
             <User className="h-4 w-4" />
-            <span className="font-mono text-[11px] uppercase tracking-[0.15em]">Entrar</span>
+            <span className="text-[11px] uppercase tracking-[0.15em]">Entrar</span>
           </Link>
 
           <Link
@@ -67,7 +67,7 @@ export function Header() {
           >
             <ShoppingBag className="h-5 w-5" />
             {totalItens > 0 && (
-              <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-rose font-mono text-[10px] text-white">
+              <span className="absolute -right-2 -top-2 flex h-5 w-5 items-center justify-center rounded-full bg-rose text-[10px] text-white">
                 {totalItens}
               </span>
             )}

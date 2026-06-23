@@ -16,7 +16,7 @@ export function Footer() {
         </div>
 
         <div className="text-sm">
-          <p className="mb-3 font-mono uppercase tracking-wide text-blush/50">Loja</p>
+          <p className="mb-3 uppercase tracking-wide text-blush/50">Loja</p>
           <ul className="flex flex-col gap-2 text-blush/80">
             <li><Link href="/loja">Catálogo completo</Link></li>
             <li><Link href="/loja?categoria=leggings">Leggings</Link></li>
@@ -25,7 +25,7 @@ export function Footer() {
         </div>
 
         <div className="text-sm">
-          <p className="mb-3 font-mono uppercase tracking-wide text-blush/50">Suporte</p>
+          <p className="mb-3 uppercase tracking-wide text-blush/50">Suporte</p>
           <ul className="flex flex-col gap-2 text-blush/80">
             <li><Link href="/carrinho">Carrinho</Link></li>
             <li><a href="#">Trocas e devoluções</a></li>
@@ -34,7 +34,7 @@ export function Footer() {
         </div>
 
         <div className="text-sm">
-          <p className="mb-3 font-mono uppercase tracking-wide text-blush/50">Vivora</p>
+          <p className="mb-3 uppercase tracking-wide text-blush/50">Vivora</p>
           <ul className="flex flex-col gap-2 text-blush/80">
             <li><a href="#">Sobre a marca</a></li>
             <li><a href="#">Blog fitness</a></li>
@@ -42,7 +42,7 @@ export function Footer() {
           </ul>
         </div>
       </div>
-      <div className="border-t border-blush/10 px-5 py-5 text-center font-mono text-[11px] text-blush/40">
+      <div className="border-t border-blush/10 px-5 py-5 text-center text-[11px] text-blush/40">
         © {new Date().getFullYear()} Vivora. Todos os direitos reservados.
       </div>
     </footer>

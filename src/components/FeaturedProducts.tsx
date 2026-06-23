@@ -15,7 +15,7 @@ export function FeaturedProducts() {
   }, []);
 
   if (produtos === null) {
-    return <p className="font-mono text-xs text-graphite/45">Carregando produtos...</p>;
+    return <p className="text-xs text-graphite/45">Carregando produtos...</p>;
   }
 
   if (produtos.length === 0) {

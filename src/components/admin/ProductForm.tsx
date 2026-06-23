@@ -162,7 +162,7 @@ export function ProductForm({ produtoExistente }: { produtoExistente?: Product }
               setSlug(e.target.value);
               setSlugEditadoManualmente(true);
             }}
-            className="campo-input font-mono text-xs"
+            className="campo-input text-xs"
           />
         </Campo>
       </Secao>
@@ -305,7 +305,7 @@ export function ProductForm({ produtoExistente }: { produtoExistente?: Product }
                   background: `linear-gradient(135deg, ${paletaVisual[0]}, ${paletaVisual[1]})`,
                 }}
               >
-                <span className="font-mono text-[9px] text-white/70">sem foto</span>
+                <span className="text-[9px] text-white/70">sem foto</span>
               </div>
             )}
             <div className="relative flex-1">
@@ -487,7 +487,7 @@ function Secao({ titulo, children }: { titulo: string; children: React.ReactNode
 function Campo({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div className="flex flex-col gap-1.5">
-      <label className="font-mono text-[11px] uppercase tracking-[0.12em] text-graphite/55">
+      <label className="text-[11px] uppercase tracking-[0.12em] text-graphite/55">
         {label}
       </label>
       {children}

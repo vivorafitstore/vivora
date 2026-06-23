@@ -41,7 +41,7 @@ function EditarProdutoContent() {
           Produto não encontrado.
         </p>
       ) : produto === undefined ? (
-        <p className="font-mono text-xs text-graphite/45">Carregando produto...</p>
+        <p className="text-xs text-graphite/45">Carregando produto...</p>
       ) : produto === null ? (
         <p className="rounded-2xl border border-mist/40 bg-white p-6 text-sm text-graphite/60">
           Produto não encontrado.

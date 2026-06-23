@@ -74,7 +74,7 @@ export default function LoginPage() {
             >
               <path d="M3 12h4l2-5 4 10 2-5h6" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-            <span className="font-mono text-[11px] uppercase tracking-[0.2em] text-white/60">
+            <span className="text-[11px] uppercase tracking-[0.2em] text-white/60">
               Vivora Fit Store
             </span>
           </div>
@@ -93,19 +93,19 @@ export default function LoginPage() {
           <div className="flex items-center gap-8">
             <div>
               <p className="font-display text-2xl text-white">12k+</p>
-              <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-white/45 mt-1">
+              <p className="text-[10px] uppercase tracking-[0.15em] text-white/45 mt-1">
                 Clientes ativas
               </p>
             </div>
             <div>
               <p className="font-display text-2xl text-white">4.9</p>
-              <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-white/45 mt-1">
+              <p className="text-[10px] uppercase tracking-[0.15em] text-white/45 mt-1">
                 Avaliação média
               </p>
             </div>
             <div>
               <p className="font-display text-2xl text-white">7 dias</p>
-              <p className="font-mono text-[10px] uppercase tracking-[0.15em] text-white/45 mt-1">
+              <p className="text-[10px] uppercase tracking-[0.15em] text-white/45 mt-1">
                 Troca garantida
               </p>
             </div>
@@ -117,7 +117,7 @@ export default function LoginPage() {
       <div className="flex items-center justify-center px-5 py-14 sm:py-20">
         <div className="w-full max-w-[26rem]">
           <div className="mb-10 text-center lg:text-left">
-            <p className="font-mono text-xs uppercase tracking-[0.2em] text-rose-deep mb-4 flex items-center justify-center gap-2 lg:justify-start">
+            <p className="text-xs uppercase tracking-[0.2em] text-rose-deep mb-4 flex items-center justify-center gap-2 lg:justify-start">
               <Sparkles className="h-3.5 w-3.5" />
               Área da cliente
             </p>
@@ -148,7 +148,7 @@ export default function LoginPage() {
             <div className="flex flex-col gap-4">
               {aba === "criar" && (
                 <div className="flex flex-col gap-1.5">
-                  <label className="font-mono text-[11px] uppercase tracking-[0.15em] text-graphite/60">
+                  <label className="text-[11px] uppercase tracking-[0.15em] text-graphite/60">
                     Nome
                   </label>
                   <div className="relative">
@@ -163,7 +163,7 @@ export default function LoginPage() {
               )}
 
               <div className="flex flex-col gap-1.5">
-                <label className="font-mono text-[11px] uppercase tracking-[0.15em] text-graphite/60">
+                <label className="text-[11px] uppercase tracking-[0.15em] text-graphite/60">
                   E-mail
                 </label>
                 <div className="relative">
@@ -178,11 +178,11 @@ export default function LoginPage() {
 
               <div className="flex flex-col gap-1.5">
                 <div className="flex items-center justify-between">
-                  <label className="font-mono text-[11px] uppercase tracking-[0.15em] text-graphite/60">
+                  <label className="text-[11px] uppercase tracking-[0.15em] text-graphite/60">
                     Senha
                   </label>
                   {aba === "entrar" && (
-                    <Link href="#" className="font-mono text-[11px] text-rose-deep hover:underline">
+                    <Link href="#" className="text-[11px] text-rose-deep hover:underline">
                       Esqueci a senha
                     </Link>
                   )}
@@ -207,7 +207,7 @@ export default function LoginPage() {
 
               {aba === "criar" && (
                 <div className="flex flex-col gap-1.5">
-                  <label className="font-mono text-[11px] uppercase tracking-[0.15em] text-graphite/60">
+                  <label className="text-[11px] uppercase tracking-[0.15em] text-graphite/60">
                     Confirmar senha
                   </label>
                   <div className="relative">
@@ -229,18 +229,18 @@ export default function LoginPage() {
 
             <div className="my-7 flex items-center gap-4">
               <div className="h-px flex-1 bg-mist/40" />
-              <span className="font-mono text-[11px] uppercase tracking-[0.15em] text-graphite/40">ou</span>
+              <span className="text-[11px] uppercase tracking-[0.15em] text-graphite/40">ou</span>
               <div className="h-px flex-1 bg-mist/40" />
             </div>
 
             <div className="text-center">
-              <Link href="/loja" className="font-mono text-xs text-graphite/50 hover:text-rose-deep transition">
+              <Link href="/loja" className="text-xs text-graphite/50 hover:text-rose-deep transition">
                 Continuar sem criar conta →
               </Link>
             </div>
           </div>
 
-          <p className="mt-8 flex items-center justify-center gap-2 text-center font-mono text-[10px] uppercase tracking-[0.15em] text-graphite/35 lg:justify-start">
+          <p className="mt-8 flex items-center justify-center gap-2 text-center text-[10px] uppercase tracking-[0.15em] text-graphite/35 lg:justify-start">
             <ShieldCheck className="h-3.5 w-3.5 text-rose-deep/70" />
             Compra 100% segura · Dados protegidos
           </p>

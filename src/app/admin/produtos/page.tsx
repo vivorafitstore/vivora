@@ -58,7 +58,7 @@ export default function AdminProdutosPage() {
       </div>
 
       {!produtos ? (
-        <p className="font-mono text-xs text-graphite/45">Carregando produtos...</p>
+        <p className="text-xs text-graphite/45">Carregando produtos...</p>
       ) : filtrados!.length === 0 ? (
         <p className="rounded-2xl border border-mist/40 bg-white p-6 text-sm text-graphite/60">
           Nenhum produto encontrado. Cadastre o primeiro produto clicando em &quot;Novo
@@ -69,12 +69,12 @@ export default function AdminProdutosPage() {
           <table className="w-full text-left text-sm">
             <thead>
               <tr className="border-b border-mist/30 text-graphite/45">
-                <th className="px-4 py-3 font-mono text-[11px] uppercase tracking-[0.1em]">Foto</th>
-                <th className="px-4 py-3 font-mono text-[11px] uppercase tracking-[0.1em]">Nome</th>
-                <th className="px-4 py-3 font-mono text-[11px] uppercase tracking-[0.1em]">Categoria</th>
-                <th className="px-4 py-3 font-mono text-[11px] uppercase tracking-[0.1em]">Preço</th>
-                <th className="px-4 py-3 font-mono text-[11px] uppercase tracking-[0.1em]">Estoque</th>
-                <th className="px-4 py-3 font-mono text-[11px] uppercase tracking-[0.1em]">Status</th>
+                <th className="px-4 py-3 text-[11px] uppercase tracking-[0.1em]">Foto</th>
+                <th className="px-4 py-3 text-[11px] uppercase tracking-[0.1em]">Nome</th>
+                <th className="px-4 py-3 text-[11px] uppercase tracking-[0.1em]">Categoria</th>
+                <th className="px-4 py-3 text-[11px] uppercase tracking-[0.1em]">Preço</th>
+                <th className="px-4 py-3 text-[11px] uppercase tracking-[0.1em]">Estoque</th>
+                <th className="px-4 py-3 text-[11px] uppercase tracking-[0.1em]">Status</th>
                 <th className="px-4 py-3" />
               </tr>
             </thead>
@@ -109,7 +109,7 @@ export default function AdminProdutosPage() {
                   </td>
                   <td className="px-4 py-3">
                     <span
-                      className={`rounded-full px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.08em] ${
+                      className={`rounded-full px-2.5 py-1 text-[10px] uppercase tracking-[0.08em] ${
                         p.ativo === false
                           ? "bg-mist/40 text-graphite/50"
                           : "bg-rose/10 text-rose-deep"

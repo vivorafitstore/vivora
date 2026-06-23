@@ -43,7 +43,7 @@ export function AddToCartButton({ produto }: { produto: Product }) {
   return (
     <div className="flex flex-col gap-5">
       <div>
-        <p className="mb-2 font-mono text-xs uppercase tracking-wide text-graphite/50">
+        <p className="mb-2 text-xs uppercase tracking-wide text-graphite/50">
           Cor — {variante.cor}
         </p>
         <div className="flex gap-2">
@@ -66,7 +66,7 @@ export function AddToCartButton({ produto }: { produto: Product }) {
       </div>
 
       <div>
-        <p className="mb-2 font-mono text-xs uppercase tracking-wide text-graphite/50">
+        <p className="mb-2 text-xs uppercase tracking-wide text-graphite/50">
           Tamanho
         </p>
         <div className="flex flex-wrap gap-2">

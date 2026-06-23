@@ -13,7 +13,7 @@
 
   --font-display: var(--font-fraunces);
   --font-body: var(--font-plus-jakarta);
-  --font-mono: var(--font-space-mono);
+  --font-mono: var(--font-plus-jakarta);
 }
 
 @theme inline {

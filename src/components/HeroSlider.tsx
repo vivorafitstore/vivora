@@ -69,7 +69,7 @@ export function HeroSlider({ slides }: { slides: HeroSlide[] }) {
 
           <div className="relative z-10 mx-auto flex h-full max-w-6xl flex-col justify-center px-5">
             <div className="max-w-lg">
-              <p className="font-mono text-xs uppercase tracking-[0.2em] text-rose">
+              <p className="text-xs uppercase tracking-[0.2em] text-rose">
                 {slide.kicker}
               </p>
               <h1 className="mt-4 font-display text-4xl leading-[1.05] tracking-display text-white md:text-6xl">

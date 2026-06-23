@@ -92,7 +92,7 @@ export default function HomePage() {
       {/* Faixa de marca */}
       <section className="my-16 bg-ink py-16 text-blush">
         <div className="mx-auto max-w-3xl px-5 text-center">
-          <p className="font-mono text-xs uppercase tracking-[0.2em] text-rose">
+          <p className="text-xs uppercase tracking-[0.2em] text-rose">
             Vivora existe por isso
           </p>
           <p className="mt-4 font-display text-2xl leading-snug tracking-display md:text-3xl">
@@ -116,7 +116,7 @@ export default function HomePage() {
                 ))}
               </div>
               <p className="text-sm text-graphite/80">{review.comentario}</p>
-              <p className="mt-3 font-mono text-xs uppercase tracking-wide text-graphite/50">
+              <p className="mt-3 text-xs uppercase tracking-wide text-graphite/50">
                 {review.autor}
               </p>
             </div>

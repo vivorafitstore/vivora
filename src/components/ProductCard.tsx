@@ -19,12 +19,12 @@ export function ProductCard({ produto }: { produto: Product }) {
           className="h-full w-full transition duration-500 group-hover:scale-[1.02]"
         />
         {produto.novidade && (
-          <span className="absolute left-3 top-3 rounded-full bg-white px-3 py-1 font-mono text-[11px] uppercase tracking-wide text-ink">
+          <span className="absolute left-3 top-3 rounded-full bg-white px-3 py-1 text-[11px] uppercase tracking-wide text-ink">
             Novidade
           </span>
         )}
         {temPromocao && !produto.novidade && (
-          <span className="absolute left-3 top-3 rounded-full bg-rose px-3 py-1 font-mono text-[11px] uppercase tracking-wide text-white">
+          <span className="absolute left-3 top-3 rounded-full bg-rose px-3 py-1 text-[11px] uppercase tracking-wide text-white">
             Oferta
           </span>
         )}
@@ -36,15 +36,15 @@ export function ProductCard({ produto }: { produto: Product }) {
         <div className="mt-1 flex items-baseline gap-2">
           {temPromocao ? (
             <>
-              <span className="font-mono text-sm text-rose-deep">
+              <span className="text-sm text-rose-deep">
                 {formatarPreco(produto.precoPromocional!)}
               </span>
-              <span className="font-mono text-xs text-graphite/40 line-through">
+              <span className="text-xs text-graphite/40 line-through">
                 {formatarPreco(produto.preco)}
               </span>
             </>
           ) : (
-            <span className="font-mono text-sm text-ink">{formatarPreco(produto.preco)}</span>
+            <span className="text-sm text-ink">{formatarPreco(produto.preco)}</span>
           )}
         </div>
       </div>

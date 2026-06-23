@@ -74,7 +74,7 @@ export default function AdminVendasPage() {
       </div>
 
       {pedidos === null ? (
-        <p className="font-mono text-xs text-graphite/45">Carregando pedidos...</p>
+        <p className="text-xs text-graphite/45">Carregando pedidos...</p>
       ) : pedidos.length === 0 ? (
         <p className="rounded-2xl border border-mist/40 bg-white p-6 text-sm text-graphite/60">
           Nenhum pedido ainda. Quando o checkout estiver funcionando, as compras dos clientes
@@ -92,12 +92,12 @@ export default function AdminVendasPage() {
                   <p className="font-display text-sm tracking-display text-ink">
                     {p.clienteNome}
                   </p>
-                  <p className="font-mono text-[11px] text-graphite/45">{p.clienteEmail}</p>
+                  <p className="text-[11px] text-graphite/45">{p.clienteEmail}</p>
                 </div>
                 <div className="flex items-center gap-4">
-                  <span className="font-mono text-sm text-ink">{formatarPreco(p.valorTotal)}</span>
+                  <span className="text-sm text-ink">{formatarPreco(p.valorTotal)}</span>
                   <span
-                    className={`rounded-full px-2.5 py-1 font-mono text-[10px] uppercase tracking-[0.08em] ${STATUS_COR[p.status]}`}
+                    className={`rounded-full px-2.5 py-1 text-[10px] uppercase tracking-[0.08em] ${STATUS_COR[p.status]}`}
                   >
                     {STATUS_LABEL[p.status]}
                   </span>
@@ -112,7 +112,7 @@ export default function AdminVendasPage() {
               {aberto === p.id && (
                 <div className="flex flex-col gap-5 border-t border-mist/30 px-5 py-5">
                   <div>
-                    <p className="mb-2 font-mono text-[11px] uppercase tracking-[0.1em] text-graphite/45">
+                    <p className="mb-2 text-[11px] uppercase tracking-[0.1em] text-graphite/45">
                       Itens do pedido
                     </p>
                     <ul className="flex flex-col gap-1">
@@ -129,14 +129,14 @@ export default function AdminVendasPage() {
                   </div>
 
                   <div className="flex flex-wrap items-center gap-2">
-                    <p className="mr-2 font-mono text-[11px] uppercase tracking-[0.1em] text-graphite/45">
+                    <p className="mr-2 text-[11px] uppercase tracking-[0.1em] text-graphite/45">
                       Status
                     </p>
                     {(Object.keys(STATUS_LABEL) as StatusPedido[]).map((s) => (
                       <button
                         key={s}
                         onClick={() => handleStatus(p, s)}
-                        className={`rounded-full px-3 py-1 font-mono text-[10px] uppercase tracking-[0.08em] transition ${
+                        className={`rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.08em] transition ${
                           p.status === s
                             ? "bg-ink text-white"
                             : "bg-blush/60 text-graphite/55 hover:bg-blush"
@@ -149,7 +149,7 @@ export default function AdminVendasPage() {
 
                   <div className="flex flex-wrap items-end gap-3">
                     <div className="flex flex-col gap-1.5">
-                      <label className="font-mono text-[11px] uppercase tracking-[0.1em] text-graphite/45">
+                      <label className="text-[11px] uppercase tracking-[0.1em] text-graphite/45">
                         Transportadora
                       </label>
                       <input
@@ -162,14 +162,14 @@ export default function AdminVendasPage() {
                       />
                     </div>
                     <div className="flex flex-1 flex-col gap-1.5">
-                      <label className="font-mono text-[11px] uppercase tracking-[0.1em] text-graphite/45">
+                      <label className="text-[11px] uppercase tracking-[0.1em] text-graphite/45">
                         Código de rastreio (colado da Shopee)
                       </label>
                       <input
                         value={rastreios[p.id] ?? ""}
                         onChange={(e) => setRastreios((r) => ({ ...r, [p.id]: e.target.value }))}
                         placeholder="Cole aqui o código de rastreio"
-                        className="campo-input font-mono"
+                        className="campo-input"
                       />
                     </div>
                     <button
@@ -188,7 +188,7 @@ export default function AdminVendasPage() {
                   </div>
 
                   {p.codigoRastreio && (
-                    <p className="flex items-center gap-2 font-mono text-xs text-graphite/50">
+                    <p className="flex items-center gap-2 text-xs text-graphite/50">
                       <Truck className="h-3.5 w-3.5" />
                       Rastreio atual: {p.codigoRastreio}
                       {p.transportadora ? ` · ${p.transportadora}` : ""}

@@ -37,7 +37,7 @@ function AdminShell({ children }: { children: ReactNode }) {
   if (carregando) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-blush">
-        <p className="font-mono text-xs uppercase tracking-[0.15em] text-graphite/50">
+        <p className="text-xs uppercase tracking-[0.15em] text-graphite/50">
           Carregando...
         </p>
       </div>
@@ -53,7 +53,7 @@ function AdminShell({ children }: { children: ReactNode }) {
           <img src="/images/logo-vivora-black.png" alt="Vivora" className="h-6 w-auto" />
         </Link>
 
-        <p className="px-2 pb-2 font-mono text-[10px] uppercase tracking-[0.15em] text-graphite/40">
+        <p className="px-2 pb-2 text-[10px] uppercase tracking-[0.15em] text-graphite/40">
           Painel admin
         </p>
 
@@ -82,7 +82,7 @@ function AdminShell({ children }: { children: ReactNode }) {
         </nav>
 
         <div className="mt-auto flex flex-col gap-2 px-2 pt-6">
-          <p className="truncate font-mono text-[11px] text-graphite/40">{usuario.email}</p>
+          <p className="truncate text-[11px] text-graphite/40">{usuario.email}</p>
           <button
             onClick={() => logout()}
             className="flex items-center gap-2 rounded-xl px-3 py-2 text-sm text-graphite/70 transition hover:bg-blush hover:text-rose-deep"
@@ -101,7 +101,7 @@ function AdminShell({ children }: { children: ReactNode }) {
           </Link>
           <button
             onClick={() => logout()}
-            className="font-mono text-[11px] uppercase tracking-[0.15em] text-graphite/60"
+            className="text-[11px] uppercase tracking-[0.15em] text-graphite/60"
           >
             Sair
           </button>
@@ -117,7 +117,7 @@ function AdminShell({ children }: { children: ReactNode }) {
               <Link
                 key={item.href}
                 href={item.href}
-                className={`shrink-0 rounded-full px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.1em] transition ${
+                className={`shrink-0 rounded-full px-3 py-1.5 text-[11px] uppercase tracking-[0.1em] transition ${
                   ativo ? "bg-ink text-white" : "text-graphite/65"
                 }`}
               >

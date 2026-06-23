@@ -51,7 +51,7 @@ export default function CarrinhoPage() {
               <p className="text-xs text-graphite/60">
                 {item.cor} · Tamanho {item.tamanho}
               </p>
-              <p className="mt-1 font-mono text-sm text-ink">{formatarPreco(item.preco)}</p>
+              <p className="mt-1 text-sm text-ink">{formatarPreco(item.preco)}</p>
             </div>
 
             <div className="flex items-center gap-2">
@@ -64,7 +64,7 @@ export default function CarrinhoPage() {
               >
                 <Minus className="h-3.5 w-3.5" />
               </button>
-              <span className="w-6 text-center font-mono text-sm">{item.quantidade}</span>
+              <span className="w-6 text-center text-sm">{item.quantidade}</span>
               <button
                 aria-label="Aumentar quantidade"
                 onClick={() =>

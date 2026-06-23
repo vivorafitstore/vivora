@@ -66,7 +66,7 @@ export function CatalogClient() {
   return (
     <div className="mx-auto max-w-6xl px-5 py-10">
       <div className="mb-8 flex flex-col gap-2">
-        <p className="font-mono text-xs uppercase tracking-[0.2em] text-rose-deep">Catálogo</p>
+        <p className="text-xs uppercase tracking-[0.2em] text-rose-deep">Catálogo</p>
         <h1 className="font-display text-3xl tracking-display text-ink">Loja completa</h1>
       </div>
 
@@ -118,7 +118,7 @@ export function CatalogClient() {
       </div>
 
       {produtos === null ? (
-        <p className="font-mono text-xs text-graphite/45">Carregando produtos...</p>
+        <p className="text-xs text-graphite/45">Carregando produtos...</p>
       ) : resultado.length === 0 ? (
         <div className="rounded-2xl bg-white/60 p-10 text-center">
           <p className="font-display text-sm tracking-display text-ink">

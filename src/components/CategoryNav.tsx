@@ -45,7 +45,7 @@ export function CategoryNavDesktop() {
               <div className="w-60 rounded-2xl border border-mist/40 bg-white p-3 shadow-[0_12px_30px_rgba(74,31,92,0.12)]">
                 <Link
                   href={`/loja?categoria=${cat.slug}`}
-                  className="block px-2 pb-2 pt-1 font-mono text-[10px] uppercase tracking-[0.15em] text-graphite/40 hover:text-rose-deep"
+                  className="block px-2 pb-2 pt-1 text-[10px] uppercase tracking-[0.15em] text-graphite/40 hover:text-rose-deep"
                 >
                   {cat.label}
                 </Link>

@@ -133,7 +133,7 @@ function CardStat({
       <Icone className="h-5 w-5 text-rose-deep" />
       <div>
         <p className="font-display text-2xl tracking-display text-ink">{valor}</p>
-        <p className="font-mono text-[11px] uppercase tracking-[0.1em] text-graphite/45">
+        <p className="text-[11px] uppercase tracking-[0.1em] text-graphite/45">
           {label}
         </p>
       </div>

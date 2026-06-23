@@ -59,7 +59,7 @@ function ProdutoContent() {
   if (produto === undefined) {
     return (
       <div className="mx-auto max-w-6xl px-5 py-20 text-center">
-        <p className="font-mono text-xs text-graphite/45">Carregando produto...</p>
+        <p className="text-xs text-graphite/45">Carregando produto...</p>
       </div>
     );
   }
@@ -118,7 +118,7 @@ function ProdutoContent() {
         <div className="flex flex-col gap-6">
           <div>
             {produto.tags.length > 0 && (
-              <p className="font-mono text-xs uppercase tracking-wide text-rose-deep">
+              <p className="text-xs uppercase tracking-wide text-rose-deep">
                 {produto.tags.join(" · ")}
               </p>
             )}
@@ -152,7 +152,7 @@ function ProdutoContent() {
                 <span className="font-display text-2xl tracking-display text-rose-deep">
                   {formatarPreco(produto.precoPromocional)}
                 </span>
-                <span className="font-mono text-base text-graphite/40 line-through">
+                <span className="text-base text-graphite/40 line-through">
                   {formatarPreco(produto.preco)}
                 </span>
               </>
@@ -180,7 +180,7 @@ function ProdutoContent() {
 
           <AddToCartButton produto={produto} />
 
-          <p className="font-mono text-xs text-graphite/50">
+          <p className="text-xs text-graphite/50">
             {produto.estoque <= 0
               ? "Sem estoque no momento"
               : produto.estoque > 10
