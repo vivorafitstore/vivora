@@ -2,16 +2,10 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Plus, Trash2, Upload, X, Loader2 } from "lucide-react";
+import { Plus, Trash2, X, Link2 } from "lucide-react";
 import { Categoria, Product, ProductVariant } from "@/lib/types";
 import { listarCategorias } from "@/lib/firestore-categorias";
-import {
-  criarProduto,
-  atualizarProduto,
-  enviarImagemProduto,
-  removerImagemProduto,
-  slugify,
-} from "@/lib/firestore-produtos";
+import { criarProduto, atualizarProduto, slugify } from "@/lib/firestore-produtos";
 
 const PALETAS_SUGERIDAS: [string, string][] = [
   ["#4a1f5c", "#d6486f"],
@@ -63,10 +57,10 @@ export function ProductForm({ produtoExistente }: { produtoExistente?: Product }
     produtoExistente?.variantes?.length ? produtoExistente.variantes : [novaVariante()]
   );
 
-  const [imagemCard, setImagemCard] = useState<string | undefined>(produtoExistente?.imagemCard);
-  const [imagens, setImagens] = useState<string[]>(produtoExistente?.imagens ?? []);
-  const [enviandoCard, setEnviandoCard] = useState(false);
-  const [enviandoGaleria, setEnviandoGaleria] = useState(false);
+  const [imagemCard, setImagemCard] = useState(produtoExistente?.imagemCard ?? "");
+  const [imagens, setImagens] = useState<string[]>(
+    produtoExistente?.imagens?.length ? produtoExistente.imagens : [""]
+  );
 
   const [salvando, setSalvando] = useState(false);
   const [erro, setErro] = useState<string | null>(null);
@@ -85,47 +79,8 @@ export function ProductForm({ produtoExistente }: { produtoExistente?: Product }
     setVariantes((v) => v.map((item, idx) => (idx === i ? { ...item, ...dados } : item)));
   }
 
-  // Precisa de um id de produto antes de subir as fotos para o Storage.
-  // Para produtos novos, geramos um id provisório (uma única vez, via
-  // inicializador tardio do useState — não a cada render) usado só como
-  // "pasta" no Storage; o doc real do Firestore ganha seu próprio id ao salvar.
-  const [idParaStorage] = useState(
-    () => produtoExistente?.id ?? `novo-${Date.now().toString(36)}`
-  );
-
-  async function handleUploadCard(e: React.ChangeEvent<HTMLInputElement>) {
-    const arquivo = e.target.files?.[0];
-    if (!arquivo) return;
-    setEnviandoCard(true);
-    try {
-      const url = await enviarImagemProduto(idParaStorage, arquivo);
-      setImagemCard(url);
-    } catch {
-      setErro("Falha ao enviar a imagem do card. Tente novamente.");
-    } finally {
-      setEnviandoCard(false);
-    }
-  }
-
-  async function handleUploadGaleria(e: React.ChangeEvent<HTMLInputElement>) {
-    const arquivos = Array.from(e.target.files ?? []);
-    if (!arquivos.length) return;
-    setEnviandoGaleria(true);
-    try {
-      const urls = await Promise.all(
-        arquivos.map((a) => enviarImagemProduto(idParaStorage, a))
-      );
-      setImagens((imgs) => [...imgs, ...urls]);
-    } catch {
-      setErro("Falha ao enviar uma ou mais imagens. Tente novamente.");
-    } finally {
-      setEnviandoGaleria(false);
-    }
-  }
-
-  async function removerFotoGaleria(url: string) {
-    setImagens((imgs) => imgs.filter((i) => i !== url));
-    removerImagemProduto(url);
+  function atualizarImagemGaleria(i: number, valor: string) {
+    setImagens((imgs) => imgs.map((url, idx) => (idx === i ? valor : url)));
   }
 
   async function handleSubmit(e: React.FormEvent) {
@@ -160,8 +115,8 @@ export function ProductForm({ produtoExistente }: { produtoExistente?: Product }
         destaque,
         novidade,
         ativo,
-        imagemCard,
-        imagens,
+        imagemCard: imagemCard.trim() || undefined,
+        imagens: imagens.map((i) => i.trim()).filter(Boolean),
         paletaVisual,
       };
 
@@ -337,18 +292,11 @@ export function ProductForm({ produtoExistente }: { produtoExistente?: Product }
 
       {/* Fotos */}
       <Secao titulo="Fotos">
-        <Campo label="Foto do card (capa do produto)">
+        <Campo label="URL da foto do card (capa do produto)">
           <div className="flex items-center gap-4">
             {imagemCard ? (
               <div className="relative h-24 w-20 overflow-hidden rounded-xl">
                 <img src={imagemCard} alt="" className="h-full w-full object-cover" />
-                <button
-                  type="button"
-                  onClick={() => setImagemCard(undefined)}
-                  className="absolute right-1 top-1 rounded-full bg-black/50 p-0.5 text-white"
-                >
-                  <X className="h-3 w-3" />
-                </button>
               </div>
             ) : (
               <div
@@ -360,47 +308,54 @@ export function ProductForm({ produtoExistente }: { produtoExistente?: Product }
                 <span className="font-mono text-[9px] text-white/70">sem foto</span>
               </div>
             )}
-            <label className="flex cursor-pointer items-center gap-2 rounded-xl border border-mist/50 px-4 py-2.5 text-sm text-graphite/70 transition hover:bg-blush">
-              {enviandoCard ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <Upload className="h-4 w-4" />
-              )}
-              Enviar foto
-              <input type="file" accept="image/*" className="hidden" onChange={handleUploadCard} />
-            </label>
+            <div className="relative flex-1">
+              <Link2 className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-graphite/35" />
+              <input
+                value={imagemCard}
+                onChange={(e) => setImagemCard(e.target.value)}
+                placeholder="https://... (link da foto, ex: da Shopee)"
+                className="campo-input pl-10"
+              />
+            </div>
           </div>
         </Campo>
 
-        <Campo label="Outras fotos do produto (galeria)">
-          <div className="flex flex-wrap gap-3">
-            {imagens.map((url) => (
-              <div key={url} className="relative h-20 w-20 overflow-hidden rounded-xl">
-                <img src={url} alt="" className="h-full w-full object-cover" />
+        <Campo label="Outras fotos do produto (galeria) — cole uma URL por campo">
+          <div className="flex flex-col gap-2">
+            {imagens.map((url, i) => (
+              <div key={i} className="flex items-center gap-3">
+                {url ? (
+                  <div className="h-12 w-10 shrink-0 overflow-hidden rounded-lg">
+                    <img src={url} alt="" className="h-full w-full object-cover" />
+                  </div>
+                ) : (
+                  <div className="h-12 w-10 shrink-0 rounded-lg bg-mist/30" />
+                )}
+                <div className="relative flex-1">
+                  <Link2 className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-graphite/35" />
+                  <input
+                    value={url}
+                    onChange={(e) => atualizarImagemGaleria(i, e.target.value)}
+                    placeholder="https://..."
+                    className="campo-input pl-10"
+                  />
+                </div>
                 <button
                   type="button"
-                  onClick={() => removerFotoGaleria(url)}
-                  className="absolute right-1 top-1 rounded-full bg-black/50 p-0.5 text-white"
+                  onClick={() => setImagens((arr) => arr.filter((_, idx) => idx !== i))}
+                  className="text-graphite/40 transition hover:text-rose-deep"
                 >
-                  <X className="h-3 w-3" />
+                  <X className="h-4 w-4" />
                 </button>
               </div>
             ))}
-            <label className="flex h-20 w-20 cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border border-dashed border-mist/60 text-graphite/50 transition hover:bg-blush">
-              {enviandoGaleria ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : (
-                <Upload className="h-4 w-4" />
-              )}
-              <span className="text-[10px]">adicionar</span>
-              <input
-                type="file"
-                accept="image/*"
-                multiple
-                className="hidden"
-                onChange={handleUploadGaleria}
-              />
-            </label>
+            <button
+              type="button"
+              onClick={() => setImagens((arr) => [...arr, ""])}
+              className="flex w-fit items-center gap-1.5 text-sm text-rose-deep"
+            >
+              <Plus className="h-3.5 w-3.5" /> Adicionar foto
+            </button>
           </div>
         </Campo>
 
