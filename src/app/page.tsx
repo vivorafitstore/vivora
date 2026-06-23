@@ -6,6 +6,14 @@ import { FeaturedProducts } from "@/components/FeaturedProducts";
 
 const heroSlides: HeroSlide[] = [
   {
+    imagem: "/images/hero/slide-promo.jpg",
+    kicker: "Promoção especial",
+    titulo: "Preços até 40% OFF na compra de dois itens.",
+    texto:
+      "Mais economia para você — compre 2 itens e ganhe o desconto. Treinos em casa, mais saúde e qualidade de vida.",
+    cta: { label: "Ver promoção", href: "/loja" },
+  },
+  {
     imagem: "/images/hero/slide-1.jpg",
     kicker: "Treino em casa · Força todo dia",
     titulo: "Sua disciplina tem um ritmo.",
@@ -58,14 +66,12 @@ const perguntas = [
 export default function HomePage() {
   return (
     <div className="flex flex-col">
-      {/* Hero */}
       <HeroSlider slides={heroSlides} />
 
       <div className="mx-auto max-w-6xl px-5">
         <div className="pulse-rule" />
       </div>
 
-      {/* Benefícios */}
       <section className="mx-auto grid max-w-6xl gap-6 px-5 py-14 md:grid-cols-3">
         {beneficios.map(({ icone: Icone, titulo, texto }) => (
           <div key={titulo} className="flex items-start gap-4 rounded-2xl bg-white/60 p-5">
@@ -78,7 +84,6 @@ export default function HomePage() {
         ))}
       </section>
 
-      {/* Destaques */}
       <section className="mx-auto max-w-6xl px-5 py-10">
         <div className="mb-6 flex items-end justify-between">
           <h2 className="font-display text-2xl tracking-display text-ink">Mais procurados</h2>
@@ -89,7 +94,6 @@ export default function HomePage() {
         <FeaturedProducts />
       </section>
 
-      {/* Faixa de marca */}
       <section className="my-16 bg-ink py-16 text-blush">
         <div className="mx-auto max-w-3xl px-5 text-center">
           <p className="text-xs uppercase tracking-[0.2em] text-rose">
@@ -102,7 +106,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Depoimentos */}
       <section className="mx-auto max-w-6xl px-5 py-10">
         <h2 className="mb-6 font-display text-2xl tracking-display text-ink">
           Quem treina, confirma
@@ -124,7 +127,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* FAQ */}
       <section className="mx-auto max-w-3xl px-5 py-16">
         <h2 className="mb-6 font-display text-2xl tracking-display text-ink">Perguntas frequentes</h2>
         <div className="flex flex-col divide-y divide-mist/40">
