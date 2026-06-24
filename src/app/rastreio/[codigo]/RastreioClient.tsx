@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useParams } from "next/navigation";
 import { Package, MapPin, CheckCircle, Clock, ExternalLink, ChevronRight } from "lucide-react";
 import { obterPedidoPorRastreio } from "@/lib/firestore-pedidos";
 import { Pedido, StepRastreio } from "@/lib/types";
@@ -24,8 +25,15 @@ function formatarData(ts: number) {
   });
 }
 
-export function RastreioClient({ codigo }: { codigo: string }) {
-  const codigoDecoded = decodeURIComponent(codigo);
+export function RastreioClient() {
+  // Lemos o código direto da URL no navegador em vez de receber via params
+  // do servidor. Com output: export, o Next só consegue pré-gerar um shell
+  // HTML genérico para esta rota dinâmica (não um arquivo por código de
+  // rastreio, que nem existem ainda no momento do build) — useParams()
+  // sempre reflete a URL real, então o conteúdo certo carrega no client
+  // independente do que foi pré-renderado.
+  const params = useParams<{ codigo: string }>();
+  const codigoDecoded = decodeURIComponent(params.codigo ?? "");
   const [pedido, setPedido] = useState<Pedido | null | "not-found">(null);
   const [loading, setLoading] = useState(true);
 
