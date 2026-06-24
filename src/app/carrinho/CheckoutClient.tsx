@@ -7,7 +7,6 @@ import {
   ArrowLeft,
   CheckCircle2,
   Loader2,
-  Banknote,
   QrCode,
   CreditCard,
 } from "lucide-react";
@@ -19,6 +18,8 @@ import { buscarCep } from "@/lib/cep";
 import { formatarPreco } from "@/lib/format";
 import { ProductVisual } from "@/components/ProductVisual";
 import { Endereco, FormaPagamento, ItemPedido } from "@/lib/types";
+import { PagamentoPix } from "./PagamentoPix";
+import { PagamentoCartao } from "./PagamentoCartao";
 
 const ENDERECO_VAZIO: Endereco = {
   cep: "",
@@ -31,9 +32,8 @@ const ENDERECO_VAZIO: Endereco = {
 };
 
 const FORMAS: { id: FormaPagamento; label: string; icon: typeof QrCode; descricao: string }[] = [
-  { id: "pix", label: "Pix", icon: QrCode, descricao: "Chave enviada por e-mail após a confirmação" },
-  { id: "boleto", label: "Boleto", icon: Banknote, descricao: "Vencimento em até 3 dias úteis" },
-  { id: "cartao", label: "Cartão", icon: CreditCard, descricao: "Combinamos o pagamento por e-mail/WhatsApp" },
+  { id: "pix", label: "Pix", icon: QrCode, descricao: "Aprovação na hora" },
+  { id: "cartao", label: "Cartão de crédito", icon: CreditCard, descricao: "Em até 12x" },
 ];
 
 type Etapa = "endereco" | "pagamento" | "confirmado";
@@ -99,8 +99,8 @@ export function CheckoutClient() {
     setEtapa("pagamento");
   }
 
-  async function handleConfirmarPedido() {
-    if (!usuario) return;
+  async function handleEscolherPagamento() {
+    if (!usuario || pedidoId) return; // evita criar pedido duplicado se já criado
     setEnviando(true);
     setErro(null);
     try {
@@ -130,13 +130,16 @@ export function CheckoutClient() {
       });
 
       setPedidoId(id);
-      limparCarrinho();
-      setEtapa("confirmado");
     } catch {
-      setErro("Não foi possível finalizar o pedido. Tente novamente.");
+      setErro("Não foi possível iniciar o pedido. Tente novamente.");
     } finally {
       setEnviando(false);
     }
+  }
+
+  function handlePagamentoConfirmado() {
+    limparCarrinho();
+    setEtapa("confirmado");
   }
 
   // Ainda carregando o estado de autenticação.
@@ -189,11 +192,10 @@ export function CheckoutClient() {
     return (
       <div className="mx-auto max-w-md px-5 py-20 text-center">
         <CheckCircle2 className="mx-auto mb-4 h-12 w-12 text-rose-deep" />
-        <h1 className="font-display text-2xl tracking-display text-ink">Pedido confirmado!</h1>
+        <h1 className="font-display text-2xl tracking-display text-ink">Pagamento confirmado!</h1>
         <p className="mt-2 text-sm text-graphite/60">
-          Recebemos seu pedido{pedidoId ? ` #${pedidoId.slice(0, 8).toUpperCase()}` : ""}. Em breve
-          entraremos em contato para confirmar o pagamento via{" "}
-          {FORMAS.find((f) => f.id === formaPagamento)?.label}.
+          Recebemos seu pagamento do pedido{pedidoId ? ` #${pedidoId.slice(0, 8).toUpperCase()}` : ""}.
+          Vamos preparar tudo com carinho para o envio.
         </p>
         <Link
           href="/minha-conta/pedidos"
@@ -318,12 +320,14 @@ export function CheckoutClient() {
 
           {etapa === "pagamento" && (
             <div className="flex flex-col gap-5">
-              <button
-                onClick={() => setEtapa("endereco")}
-                className="flex items-center gap-1.5 text-xs text-graphite/55 hover:text-ink"
-              >
-                <ArrowLeft className="h-3.5 w-3.5" /> Voltar para o endereço
-              </button>
+              {!pedidoId && (
+                <button
+                  onClick={() => setEtapa("endereco")}
+                  className="flex items-center gap-1.5 text-xs text-graphite/55 hover:text-ink"
+                >
+                  <ArrowLeft className="h-3.5 w-3.5" /> Voltar para o endereço
+                </button>
+              )}
 
               <h2 className="font-display text-base tracking-display text-ink">Forma de pagamento</h2>
 
@@ -335,8 +339,9 @@ export function CheckoutClient() {
                     <button
                       key={forma.id}
                       type="button"
+                      disabled={!!pedidoId}
                       onClick={() => setFormaPagamento(forma.id)}
-                      className={`flex items-center gap-3 rounded-xl border p-4 text-left transition ${
+                      className={`flex items-center gap-3 rounded-xl border p-4 text-left transition disabled:opacity-60 ${
                         selecionada ? "border-rose bg-blush/40" : "border-mist/50 hover:border-mist"
                       }`}
                     >
@@ -350,21 +355,36 @@ export function CheckoutClient() {
                 })}
               </div>
 
-              <p className="text-xs text-graphite/45">
-                O pagamento é confirmado manualmente pela nossa equipe após o pedido — você
-                receberá as instruções por e-mail.
-              </p>
-
               {erro && <p className="text-sm text-rose-deep">{erro}</p>}
 
-              <button
-                onClick={handleConfirmarPedido}
-                disabled={enviando}
-                className="mt-2 inline-flex items-center justify-center gap-2 self-start rounded-xl bg-ink px-6 py-3.5 font-display text-sm tracking-display text-white transition hover:bg-plum disabled:opacity-50"
-              >
-                {enviando ? "Confirmando..." : "Confirmar pedido"}
-                <ArrowRight className="h-4 w-4" />
-              </button>
+              {!pedidoId && (
+                <button
+                  onClick={handleEscolherPagamento}
+                  disabled={enviando}
+                  className="mt-2 inline-flex items-center justify-center gap-2 self-start rounded-xl bg-ink px-6 py-3.5 font-display text-sm tracking-display text-white transition hover:bg-plum disabled:opacity-50"
+                >
+                  {enviando ? "Aguarde..." : "Continuar"}
+                  <ArrowRight className="h-4 w-4" />
+                </button>
+              )}
+
+              {pedidoId && formaPagamento === "pix" && (
+                <PagamentoPix
+                  pedidoId={pedidoId}
+                  valor={subtotal}
+                  email={usuario.email ?? ""}
+                  onPago={handlePagamentoConfirmado}
+                />
+              )}
+
+              {pedidoId && formaPagamento === "cartao" && (
+                <PagamentoCartao
+                  pedidoId={pedidoId}
+                  valor={subtotal}
+                  email={usuario.email ?? ""}
+                  onAprovado={handlePagamentoConfirmado}
+                />
+              )}
             </div>
           )}
         </div>
