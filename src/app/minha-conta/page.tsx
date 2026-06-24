@@ -37,7 +37,7 @@ export default function DadosPessoaisPage() {
     setPerfilRefletido(perfil);
     setNome(perfil.nome ?? "");
     setTelefone(perfil.telefone ?? "");
-    setEndereco(perfil.endereco ?? ENDERECO_VAZIO);
+    setEndereco(perfil.endereco ? { ...ENDERECO_VAZIO, ...perfil.endereco } : ENDERECO_VAZIO);
   }
 
   async function handleCepBlur() {

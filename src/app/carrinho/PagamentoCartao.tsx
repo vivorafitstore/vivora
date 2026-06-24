@@ -54,7 +54,8 @@ export function PagamentoCartao({ pedidoId, valor, email, onAprovado }: Props) {
       } else {
         setErro("Pagamento em análise. Vamos avisar você quando for confirmado.");
       }
-    } catch {
+    } catch (err) {
+      console.error("Erro ao processar pagamento com cartão:", err);
       setErro("Não foi possível processar o pagamento. Tente novamente.");
     } finally {
       setEnviando(false);

@@ -57,7 +57,7 @@ export function CheckoutClient() {
   const [perfilRefletido, setPerfilRefletido] = useState<typeof perfil>(null);
   if (perfil && perfil !== perfilRefletido) {
     setPerfilRefletido(perfil);
-    if (perfil.endereco) setEndereco(perfil.endereco);
+    if (perfil.endereco) setEndereco({ ...ENDERECO_VAZIO, ...perfil.endereco });
     if (perfil.telefone) setTelefone(perfil.telefone);
   }
 
@@ -130,7 +130,13 @@ export function CheckoutClient() {
       });
 
       setPedidoId(id);
-    } catch {
+    } catch (err) {
+      console.error("Erro ao iniciar pedido:", err, {
+        endereco,
+        telefone,
+        formaPagamento,
+        uid: usuario.uid,
+      });
       setErro("Não foi possível iniciar o pedido. Tente novamente.");
     } finally {
       setEnviando(false);
