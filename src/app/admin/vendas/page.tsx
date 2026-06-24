@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import {
-  Truck, Save, ChevronDown, ChevronUp, Plus, Trash2, GripVertical, MapPin, Package,
+  Truck, Save, ChevronDown, ChevronUp, Plus, Trash2, MapPin, Package,
 } from "lucide-react";
 import {
   listarPedidos,
@@ -134,7 +134,7 @@ function StepsEditor({ pedido, onSaved }: { pedido: Pedido; onSaved: () => void 
 
       {steps.length === 0 ? (
         <p className="rounded-xl border border-dashed border-mist/60 p-4 text-center text-xs text-graphite/40">
-          Nenhum step adicionado ainda. Clique em "Adicionar step" para começar.
+          Nenhum step adicionado ainda. Clique em &quot;Adicionar step&quot; para começar.
         </p>
       ) : (
         <div className="flex flex-col gap-3">
@@ -222,7 +222,20 @@ export default function AdminVendasPage() {
     setTransportadoras(Object.fromEntries(dados.map((p) => [p.id, p.transportadora ?? ""])));
   }
 
-  useEffect(() => { carregar(); }, []);
+  useEffect(() => {
+    let cancelado = false;
+
+    listarPedidos().then((dados) => {
+      if (cancelado) return;
+      setPedidos(dados);
+      setRastreios(Object.fromEntries(dados.map((p) => [p.id, p.codigoRastreio ?? ""])));
+      setTransportadoras(Object.fromEntries(dados.map((p) => [p.id, p.transportadora ?? ""])));
+    });
+
+    return () => {
+      cancelado = true;
+    };
+  }, []);
 
   async function handleSalvarRastreio(p: Pedido) {
     setSalvandoId(p.id);

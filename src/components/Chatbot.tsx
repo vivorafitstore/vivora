@@ -193,21 +193,27 @@ export function Chatbot() {
 
   // mensagem de boas-vindas ao abrir pela primeira vez
   useEffect(() => {
-    if (open && !started) {
+    if (!open || started) return;
+
+    const timeoutDigitando = setTimeout(() => setTyping(true), 0);
+
+    const timeoutResposta = setTimeout(() => {
       setStarted(true);
-      setTyping(true);
-      setTimeout(() => {
-        setTyping(false);
-        setMsgs([
-          {
-            id: nextId(),
-            from: "bot",
-            text: "Olá! 👋\n\nBem-vinda à Vivora.\n\nComo podemos ajudar você hoje?",
-            time: now(),
-          },
-        ]);
-      }, 900);
-    }
+      setTyping(false);
+      setMsgs([
+        {
+          id: nextId(),
+          from: "bot",
+          text: "Olá! 👋\n\nBem-vinda à Vivora.\n\nComo podemos ajudar você hoje?",
+          time: now(),
+        },
+      ]);
+    }, 900);
+
+    return () => {
+      clearTimeout(timeoutDigitando);
+      clearTimeout(timeoutResposta);
+    };
   }, [open, started]);
 
   // scroll automático
