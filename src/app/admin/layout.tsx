@@ -20,15 +20,17 @@ const NAV = [
 ];
 
 function AdminShell({ children }: { children: ReactNode }) {
-  const { usuario, carregando, logout } = useAdminAuth();
+  const { usuario, ehAdmin, carregando, logout } = useAdminAuth();
   const pathname = usePathname();
   const router = useRouter();
 
   useEffect(() => {
-    if (!carregando && !usuario && pathname !== "/admin/login") {
+    if (carregando) return;
+    if (pathname === "/admin/login") return;
+    if (!usuario || !ehAdmin) {
       router.replace("/admin/login");
     }
-  }, [carregando, usuario, pathname, router]);
+  }, [carregando, usuario, ehAdmin, pathname, router]);
 
   if (pathname === "/admin/login") {
     return <>{children}</>;
@@ -44,7 +46,7 @@ function AdminShell({ children }: { children: ReactNode }) {
     );
   }
 
-  if (!usuario) return null;
+  if (!usuario || !ehAdmin) return null;
 
   return (
     <div className="flex min-h-screen bg-blush">

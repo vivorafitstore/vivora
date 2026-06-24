@@ -1,0 +1,37 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function ehAdmin() {
+      return request.auth != null && request.auth.token.admin == true;
+    }
+
+    match /produtos/{id} {
+      allow read: if true;
+      allow write: if ehAdmin();
+    }
+
+    match /categorias/{id} {
+      allow read: if true;
+      allow write: if ehAdmin();
+    }
+
+    match /pedidos/{id} {
+      // Admin tem acesso total. Cliente só lê o próprio pedido e só pode
+      // criar pedidos vinculados ao próprio uid (clienteId == seu uid) —
+      // nunca atualizar ou deletar.
+      allow read: if ehAdmin() ||
+        (request.auth != null && resource.data.clienteId == request.auth.uid);
+      allow create: if ehAdmin() ||
+        (request.auth != null && request.resource.data.clienteId == request.auth.uid);
+      allow update, delete: if ehAdmin();
+    }
+
+    match /usuarios/{uid} {
+      // Cada cliente só lê/escreve o próprio documento. Admin também
+      // pode ler (útil para o painel mostrar dados do cliente futuramente).
+      allow read: if ehAdmin() || (request.auth != null && request.auth.uid == uid);
+      allow write: if request.auth != null && request.auth.uid == uid;
+    }
+  }
+}

@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Lock, Mail, ShieldCheck } from "lucide-react";
+import { signOut } from "firebase/auth";
+import { auth } from "@/lib/firebase";
 import { useAdminAuth } from "@/context/AdminAuthContext";
 
 export default function AdminLoginPage() {
@@ -19,6 +21,17 @@ export default function AdminLoginPage() {
     setEnviando(true);
     try {
       await login(email, senha);
+
+      // O Firebase Auth aceita qualquer e-mail/senha válido — quem
+      // controla se a pessoa é admin é a custom claim, então checamos
+      // aqui antes de liberar o redirecionamento para o painel.
+      const tokenResult = await auth.currentUser?.getIdTokenResult(true);
+      if (tokenResult?.claims.admin !== true) {
+        await signOut(auth);
+        setErro("Esta conta não tem acesso ao painel administrativo.");
+        return;
+      }
+
       router.replace("/admin");
     } catch {
       setErro("E-mail ou senha incorretos.");
