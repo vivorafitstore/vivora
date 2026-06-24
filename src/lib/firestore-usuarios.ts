@@ -1,4 +1,4 @@
-import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc } from "firebase/firestore";
 import { db } from "./firebase";
 import { Endereco, Usuario } from "./types";
 
@@ -21,10 +21,19 @@ export async function atualizarUsuario(
   uid: string,
   dados: Partial<Omit<Usuario, "uid" | "criadoEm">>
 ): Promise<void> {
-  await updateDoc(doc(db, COL, uid), {
-    ...dados,
-    atualizadoEm: Date.now(),
-  });
+  // setDoc com merge em vez de updateDoc: tolera o caso do documento ainda
+  // não existir (ex: cliente que pulou "Dados pessoais" e foi direto pro
+  // checkout, ou contas antigas criadas antes desse fluxo existir).
+  // updateDoc lançaria "No document to update" nesse caso.
+  await setDoc(
+    doc(db, COL, uid),
+    {
+      uid,
+      ...dados,
+      atualizadoEm: Date.now(),
+    },
+    { merge: true }
+  );
 }
 
 export async function completarPerfilGoogle(
@@ -32,10 +41,15 @@ export async function completarPerfilGoogle(
   telefone: string,
   endereco: Endereco
 ): Promise<void> {
-  await updateDoc(doc(db, COL, uid), {
-    telefone,
-    endereco,
-    perfilIncompleto: false,
-    atualizadoEm: Date.now(),
-  });
+  await setDoc(
+    doc(db, COL, uid),
+    {
+      uid,
+      telefone,
+      endereco,
+      perfilIncompleto: false,
+      atualizadoEm: Date.now(),
+    },
+    { merge: true }
+  );
 }
