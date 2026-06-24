@@ -1,13 +1,20 @@
 "use client";
 
+import { useState } from "react";
 import Link from "next/link";
 import { Minus, Plus, X, ArrowRight } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { formatarPreco } from "@/lib/format";
 import { ProductVisual } from "@/components/ProductVisual";
+import { CheckoutClient } from "./CheckoutClient";
 
 export default function CarrinhoPage() {
   const { items, subtotal, removerItem, atualizarQuantidade } = useCart();
+  const [emCheckout, setEmCheckout] = useState(false);
+
+  if (emCheckout) {
+    return <CheckoutClient />;
+  }
 
   if (items.length === 0) {
     return (
@@ -93,14 +100,13 @@ export default function CarrinhoPage() {
           <span>{formatarPreco(subtotal)}</span>
         </div>
         <p className="text-xs text-graphite/50">
-          Frete e formas de pagamento serão calculados no checkout.
+          Frete será combinado após a confirmação do pedido.
         </p>
         <button
-          disabled
-          title="Checkout será habilitado na próxima etapa, com integração de pagamento"
-          className="w-full max-w-xs rounded-xl bg-ink px-6 py-4 text-center font-display text-sm tracking-display text-white opacity-50"
+          onClick={() => setEmCheckout(true)}
+          className="w-full max-w-xs rounded-xl bg-ink px-6 py-4 text-center font-display text-sm tracking-display text-white transition hover:bg-plum"
         >
-          Finalizar compra (em breve)
+          Finalizar compra
         </button>
       </div>
     </div>

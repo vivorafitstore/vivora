@@ -48,6 +48,13 @@ export async function atualizarRastreioPedido(
   });
 }
 
+export async function listarPedidosDoCliente(clienteId: string): Promise<Pedido[]> {
+  const snap = await getDocs(
+    query(collection(db, COL), where("clienteId", "==", clienteId), orderBy("criadoEm", "desc"))
+  );
+  return snap.docs.map((d) => ({ id: d.id, ...(d.data() as Omit<Pedido, "id">) }));
+}
+
 export async function obterPedidoPorRastreio(codigo: string): Promise<Pedido | null> {
   const snap = await getDocs(
     query(collection(db, COL), where("codigoRastreio", "==", codigo))

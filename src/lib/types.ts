@@ -54,7 +54,30 @@ export interface Categoria {
   subcategorias: Subcategoria[];
 }
 
+export interface Endereco {
+  cep: string;
+  rua: string;
+  numero: string;
+  complemento?: string;
+  bairro: string;
+  cidade: string;
+  uf: string;
+}
+
+export interface Usuario {
+  uid: string;
+  nome: string;
+  email: string;
+  telefone?: string;
+  endereco?: Endereco;
+  criadoEm: number;
+  atualizadoEm?: number;
+  /** true se a conta foi criada via Google e ainda não completou telefone/endereço */
+  perfilIncompleto?: boolean;
+}
+
 export type StatusPedido = "pendente" | "pago" | "enviado" | "entregue" | "cancelado";
+export type FormaPagamento = "pix" | "boleto" | "cartao";
 
 export interface StepRastreio {
   id: string;
@@ -75,9 +98,13 @@ export interface ItemPedido {
 
 export interface Pedido {
   id: string;
+  /** uid do Firebase Auth, quando o pedido foi feito por um cliente logado */
+  clienteId?: string;
   clienteNome: string;
   clienteEmail: string;
   clienteTelefone?: string;
+  enderecoEntrega?: Endereco;
+  formaPagamento?: FormaPagamento;
   itens: ItemPedido[];
   valorTotal: number;
   status: StatusPedido;

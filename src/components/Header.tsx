@@ -5,12 +5,14 @@ import { usePathname, useRouter } from "next/navigation";
 import { ShoppingBag, Menu, X, User, Search } from "lucide-react";
 import { useState } from "react";
 import { useCart } from "@/context/CartContext";
+import { useAuth } from "@/context/AuthContext";
 import { CategoryNavDesktop, CategoryNavMobile } from "@/components/CategoryNav";
 
 export function Header() {
   const pathname = usePathname();
   const router = useRouter();
   const { totalItens } = useCart();
+  const { usuario } = useAuth();
   const [menuAberto, setMenuAberto] = useState(false);
   const [busca, setBusca] = useState("");
 
@@ -76,14 +78,18 @@ export function Header() {
           </button>
 
           <Link
-            href="/login"
-            aria-label="Entrar na conta"
+            href={usuario ? "/minha-conta" : "/login"}
+            aria-label={usuario ? "Minha conta" : "Entrar na conta"}
             className={`hidden md:flex items-center gap-1 transition ${
-              pathname === "/login" ? "text-rose" : "text-graphite/70 hover:text-ink"
+              pathname === "/login" || pathname?.startsWith("/minha-conta")
+                ? "text-rose"
+                : "text-graphite/70 hover:text-ink"
             }`}
           >
             <User className="h-4 w-4" />
-            <span className="text-[11px] uppercase tracking-[0.15em]">Entrar</span>
+            <span className="text-[11px] uppercase tracking-[0.15em]">
+              {usuario ? "Minha conta" : "Entrar"}
+            </span>
           </Link>
 
           <Link
@@ -136,11 +142,11 @@ export function Header() {
         <div className="border-t border-mist/40 px-5 py-3 lg:hidden">
           <CategoryNavMobile onNavigate={() => setMenuAberto(false)} />
           <Link
-            href="/login"
+            href={usuario ? "/minha-conta" : "/login"}
             className="block border-t border-mist/30 py-2 pt-3 text-sm text-graphite/80"
             onClick={() => setMenuAberto(false)}
           >
-            Entrar / Criar conta
+            {usuario ? "Minha conta" : "Entrar / Criar conta"}
           </Link>
         </div>
       )}

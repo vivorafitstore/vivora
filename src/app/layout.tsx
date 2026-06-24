@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Fraunces, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
+import { AuthProvider } from "@/context/AuthContext";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Chatbot } from "@/components/Chatbot";
@@ -48,12 +49,14 @@ export default function RootLayout({
       className={`${fraunces.variable} ${plusJakarta.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col font-body">
-        <CartProvider>
-          <Header />
-          <main className="flex-1">{children}</main>
-          <Footer />
-          <Chatbot />
-        </CartProvider>
+        <AuthProvider>
+          <CartProvider>
+            <Header />
+            <main className="flex-1">{children}</main>
+            <Footer />
+            <Chatbot />
+          </CartProvider>
+        </AuthProvider>
       </body>
     </html>
   );
