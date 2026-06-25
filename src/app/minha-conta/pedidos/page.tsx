@@ -41,11 +41,18 @@ export default function PedidosPage() {
   const [aba, setAba] = useState<Aba>("em-andamento");
   const [pedidos, setPedidos] = useState<Pedido[]>([]);
   const [carregando, setCarregando] = useState(true);
+  const [erro, setErro] = useState<string | null>(null);
 
   useEffect(() => {
     if (!usuario) return;
     listarPedidosDoCliente(usuario.uid)
       .then(setPedidos)
+      .catch((err) => {
+        console.error("Erro ao listar pedidos do cliente:", err);
+        setErro(
+          "Não foi possível carregar seus pedidos agora. Tente novamente em alguns instantes."
+        );
+      })
       .finally(() => setCarregando(false));
   }, [usuario]);
 
@@ -80,7 +87,11 @@ export default function PedidosPage() {
         <p className="text-sm text-graphite/45">Carregando pedidos...</p>
       )}
 
-      {aba === "em-andamento" && !carregando && (
+      {aba !== "carrinho" && !carregando && erro && (
+        <p className="rounded-2xl border border-rose/30 bg-blush/40 p-4 text-sm text-rose-deep">{erro}</p>
+      )}
+
+      {aba === "em-andamento" && !carregando && !erro && (
         emAndamento.length === 0 ? (
           <EstadoVazio mensagem="Você ainda não tem pedidos em andamento." />
         ) : (
@@ -92,7 +103,7 @@ export default function PedidosPage() {
         )
       )}
 
-      {aba === "concluidos" && !carregando && (
+      {aba === "concluidos" && !carregando && !erro && (
         concluidos.length === 0 ? (
           <EstadoVazio mensagem="Nenhum pedido concluído ainda." />
         ) : (
