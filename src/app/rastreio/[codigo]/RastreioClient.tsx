@@ -46,9 +46,16 @@ export function RastreioClient() {
 
   useEffect(() => {
     if (!codigoDecoded) return;
+    console.log("[rastreio] buscando pedido com codigoRastreio =", JSON.stringify(codigoDecoded));
     obterPedidoPorRastreio(codigoDecoded)
-      .then((p) => setPedido(p ?? "not-found"))
-      .catch(() => setPedido("not-found"))
+      .then((p) => {
+        console.log("[rastreio] resultado da busca:", p);
+        setPedido(p ?? "not-found");
+      })
+      .catch((err) => {
+        console.error("[rastreio] erro na busca:", err);
+        setPedido("not-found");
+      })
       .finally(() => setLoading(false));
   }, [codigoDecoded]);
 
