@@ -74,10 +74,10 @@ export default function DadosPessoaisPage() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-col gap-6 rounded-2xl border border-mist/40 bg-white p-6"
+      className="flex flex-col gap-7 rounded-2xl border border-mist/30 bg-white p-7 shadow-[0_4px_24px_rgba(74,31,92,0.05)]"
     >
       <div>
-        <h2 className="font-display text-lg tracking-display text-ink">Dados pessoais</h2>
+        <h2 className="font-display text-xl tracking-display text-ink">Dados pessoais</h2>
         <p className="mt-1 text-sm text-graphite/55">
           Mantenha seus dados atualizados para facilitar suas compras e entregas.
         </p>
@@ -114,7 +114,11 @@ export default function DadosPessoaisPage() {
         </div>
       </div>
 
-      <div className="h-px bg-mist/30" />
+      <div className="relative h-px bg-mist/30">
+        <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-white px-3 text-rose/50">
+          ✦
+        </span>
+      </div>
 
       <div>
         <p className="mb-4 text-[11px] uppercase tracking-[0.15em] text-graphite/60">Endereço</p>

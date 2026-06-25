@@ -28,8 +28,12 @@ export default function AdminDashboard() {
   const carregando = produtos === null || categorias === null || pedidos === null;
   const semEstoque = produtos?.filter((p) => p.estoque <= 0).length ?? 0;
   const estoqueBaixo = produtos?.filter((p) => p.estoque > 0 && p.estoque <= 5).length ?? 0;
+  // Conta apenas pedidos com pagamento já confirmado — "pendente" ainda não
+  // teve o pagamento aprovado (pode nunca ser pago), e "cancelado" não deve
+  // contar de qualquer forma.
+  const STATUS_PAGOS: Pedido["status"][] = ["pago", "enviado", "entregue"];
   const faturamento =
-    pedidos?.reduce((acc, p) => acc + (p.status !== "cancelado" ? p.valorTotal : 0), 0) ?? 0;
+    pedidos?.reduce((acc, p) => acc + (STATUS_PAGOS.includes(p.status) ? p.valorTotal : 0), 0) ?? 0;
 
   return (
     <div className="flex flex-col gap-8">
@@ -66,7 +70,7 @@ export default function AdminDashboard() {
         />
         <CardStat
           icone={Receipt}
-          label="Faturamento (pedidos válidos)"
+          label="Faturamento (pagamentos aprovados)"
           valor={carregando ? "—" : formatarPreco(faturamento)}
           href="/admin/vendas"
         />

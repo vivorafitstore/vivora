@@ -66,9 +66,9 @@ export default function ConfiguracoesPage() {
   }
 
   return (
-    <div className="flex flex-col gap-6 rounded-2xl border border-mist/40 bg-white p-6">
+    <div className="flex flex-col gap-7 rounded-2xl border border-mist/30 bg-white p-7 shadow-[0_4px_24px_rgba(74,31,92,0.05)]">
       <div>
-        <h2 className="font-display text-lg tracking-display text-ink">Configurações</h2>
+        <h2 className="font-display text-xl tracking-display text-ink">Configurações</h2>
         <p className="mt-1 text-sm text-graphite/55">Gerencie a segurança da sua conta.</p>
       </div>
 

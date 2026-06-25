@@ -62,7 +62,7 @@ export default function PedidosPage() {
   return (
     <div className="flex flex-col gap-6">
       <div>
-        <h2 className="font-display text-lg tracking-display text-ink">Pedidos</h2>
+        <h2 className="font-display text-xl tracking-display text-ink">Pedidos</h2>
         <p className="mt-1 text-sm text-graphite/55">Acompanhe suas compras e o que está no carrinho.</p>
       </div>
 
@@ -117,7 +117,7 @@ export default function PedidosPage() {
 
       {aba === "carrinho" && (
         items.length === 0 ? (
-          <div className="rounded-2xl border border-mist/40 bg-white p-8 text-center">
+          <div className="rounded-2xl border border-mist/30 bg-white p-8 text-center shadow-[0_4px_24px_rgba(74,31,92,0.05)]">
             <ShoppingBag className="mx-auto mb-3 h-8 w-8 text-mist" />
             <p className="font-display text-base tracking-display text-ink">Seu carrinho está vazio</p>
             <Link
@@ -129,7 +129,7 @@ export default function PedidosPage() {
           </div>
         ) : (
           <div className="flex flex-col gap-4">
-            <div className="flex flex-col gap-3 rounded-2xl border border-mist/40 bg-white p-5">
+            <div className="flex flex-col gap-3 rounded-2xl border border-mist/30 bg-white p-5 shadow-[0_4px_24px_rgba(74,31,92,0.05)]">
               {items.map((item) => (
                 <div key={`${item.varianteId}-${item.tamanho}`} className="flex items-center gap-4">
                   <ProductVisual
@@ -167,7 +167,7 @@ export default function PedidosPage() {
 
 function EstadoVazio({ mensagem }: { mensagem: string }) {
   return (
-    <div className="rounded-2xl border border-mist/40 bg-white p-8 text-center">
+    <div className="rounded-2xl border border-mist/30 bg-white p-8 text-center shadow-[0_4px_24px_rgba(74,31,92,0.05)]">
       <Package className="mx-auto mb-3 h-8 w-8 text-mist" />
       <p className="text-sm text-graphite/55">{mensagem}</p>
     </div>
@@ -176,7 +176,7 @@ function EstadoVazio({ mensagem }: { mensagem: string }) {
 
 function PedidoCard({ pedido, comRastreio }: { pedido: Pedido; comRastreio?: boolean }) {
   return (
-    <div className="rounded-2xl border border-mist/40 bg-white p-5">
+    <div className="rounded-2xl border border-mist/30 bg-white p-5 shadow-[0_4px_24px_rgba(74,31,92,0.05)]">
       <div className="flex items-start justify-between gap-4">
         <div>
           <p className="font-display text-sm tracking-display text-ink">

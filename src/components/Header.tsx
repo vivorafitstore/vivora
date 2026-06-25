@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { ShoppingBag, Menu, X, User, Search } from "lucide-react";
+import { ShoppingBag, Menu, X, User, Search, LogOut, ChevronDown } from "lucide-react";
 import { useState } from "react";
 import { useCart } from "@/context/CartContext";
 import { useAuth } from "@/context/AuthContext";
@@ -12,11 +12,20 @@ export function Header() {
   const pathname = usePathname();
   const router = useRouter();
   const { totalItens } = useCart();
-  const { usuario } = useAuth();
+  const { usuario, perfil, logout } = useAuth();
   const [menuAberto, setMenuAberto] = useState(false);
+  const [contaAberta, setContaAberta] = useState(false);
   const [busca, setBusca] = useState("");
 
   if (pathname?.startsWith("/admin")) return null;
+
+  const primeiroNome = perfil?.nome?.trim().split(" ")[0] || usuario?.displayName?.trim().split(" ")[0];
+
+  async function handleLogout() {
+    await logout();
+    setContaAberta(false);
+    router.push("/");
+  }
 
   function buscar(e: React.FormEvent) {
     e.preventDefault();
@@ -77,20 +86,62 @@ export function Header() {
             <Search className="h-5 w-5" />
           </button>
 
-          <Link
-            href={usuario ? "/minha-conta" : "/login"}
-            aria-label={usuario ? "Minha conta" : "Entrar na conta"}
-            className={`hidden md:flex items-center gap-1 transition ${
-              pathname === "/login" || pathname?.startsWith("/minha-conta")
-                ? "text-rose"
-                : "text-graphite/70 hover:text-ink"
-            }`}
-          >
-            <User className="h-4 w-4" />
-            <span className="text-[11px] uppercase tracking-[0.15em]">
-              {usuario ? "Minha conta" : "Entrar"}
-            </span>
-          </Link>
+          {usuario ? (
+            <div className="relative hidden md:block">
+              <button
+                onClick={() => setContaAberta((v) => !v)}
+                aria-label="Minha conta"
+                className={`flex items-center gap-1.5 transition ${
+                  pathname?.startsWith("/minha-conta") ? "text-rose" : "text-graphite/70 hover:text-ink"
+                }`}
+              >
+                <User className="h-4 w-4" />
+                <span className="text-[11px] uppercase tracking-[0.15em]">
+                  {primeiroNome || "Minha conta"}
+                </span>
+                <ChevronDown className={`h-3 w-3 transition ${contaAberta ? "rotate-180" : ""}`} />
+              </button>
+
+              {contaAberta && (
+                <>
+                  <div className="fixed inset-0 z-30" onClick={() => setContaAberta(false)} />
+                  <div className="absolute right-0 top-8 z-40 w-44 overflow-hidden rounded-xl border border-mist/40 bg-white shadow-lg">
+                    <Link
+                      href="/minha-conta"
+                      onClick={() => setContaAberta(false)}
+                      className="block px-4 py-2.5 text-xs text-graphite/75 transition hover:bg-blush hover:text-ink"
+                    >
+                      Minha conta
+                    </Link>
+                    <Link
+                      href="/minha-conta/pedidos"
+                      onClick={() => setContaAberta(false)}
+                      className="block px-4 py-2.5 text-xs text-graphite/75 transition hover:bg-blush hover:text-ink"
+                    >
+                      Meus pedidos
+                    </Link>
+                    <button
+                      onClick={handleLogout}
+                      className="flex w-full items-center gap-1.5 border-t border-mist/30 px-4 py-2.5 text-xs text-graphite/75 transition hover:bg-blush hover:text-rose-deep"
+                    >
+                      <LogOut className="h-3.5 w-3.5" /> Sair
+                    </button>
+                  </div>
+                </>
+              )}
+            </div>
+          ) : (
+            <Link
+              href="/login"
+              aria-label="Entrar na conta"
+              className={`hidden md:flex items-center gap-1 transition ${
+                pathname === "/login" ? "text-rose" : "text-graphite/70 hover:text-ink"
+              }`}
+            >
+              <User className="h-4 w-4" />
+              <span className="text-[11px] uppercase tracking-[0.15em]">Entrar</span>
+            </Link>
+          )}
 
           <Link
             href="/carrinho"
@@ -141,13 +192,44 @@ export function Header() {
       {menuAberto && (
         <div className="border-t border-mist/40 px-5 py-3 lg:hidden">
           <CategoryNavMobile onNavigate={() => setMenuAberto(false)} />
-          <Link
-            href={usuario ? "/minha-conta" : "/login"}
-            className="block border-t border-mist/30 py-2 pt-3 text-sm text-graphite/80"
-            onClick={() => setMenuAberto(false)}
-          >
-            {usuario ? "Minha conta" : "Entrar / Criar conta"}
-          </Link>
+          {usuario ? (
+            <div className="border-t border-mist/30 pt-3">
+              <p className="px-0 py-1 text-[11px] uppercase tracking-[0.1em] text-graphite/40">
+                {primeiroNome ? `Olá, ${primeiroNome}` : "Minha conta"}
+              </p>
+              <Link
+                href="/minha-conta"
+                className="block py-2 text-sm text-graphite/80"
+                onClick={() => setMenuAberto(false)}
+              >
+                Minha conta
+              </Link>
+              <Link
+                href="/minha-conta/pedidos"
+                className="block py-2 text-sm text-graphite/80"
+                onClick={() => setMenuAberto(false)}
+              >
+                Meus pedidos
+              </Link>
+              <button
+                onClick={() => {
+                  setMenuAberto(false);
+                  handleLogout();
+                }}
+                className="flex items-center gap-1.5 py-2 text-sm text-rose-deep"
+              >
+                <LogOut className="h-4 w-4" /> Sair
+              </button>
+            </div>
+          ) : (
+            <Link
+              href="/login"
+              className="block border-t border-mist/30 py-2 pt-3 text-sm text-graphite/80"
+              onClick={() => setMenuAberto(false)}
+            >
+              Entrar / Criar conta
+            </Link>
+          )}
         </div>
       )}
     </header>

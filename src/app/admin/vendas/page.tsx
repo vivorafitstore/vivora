@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import {
   Truck, Save, ChevronDown, ChevronUp, Plus, Trash2, MapPin, Package,
 } from "lucide-react";
@@ -266,6 +266,140 @@ export default function AdminVendasPage() {
     await carregar();
   }
 
+  const pedidosAtivos = pedidos?.filter((p) => p.status !== "cancelado") ?? [];
+  const pedidosCancelados = pedidos?.filter((p) => p.status === "cancelado") ?? [];
+
+  function renderPedido(p: Pedido) {
+    return (
+      <div key={p.id} className="rounded-2xl border border-mist/40 bg-white">
+        <button
+          onClick={() => setAberto(aberto === p.id ? null : p.id)}
+          className="flex w-full flex-wrap items-center justify-between gap-3 px-5 py-4 text-left"
+        >
+          <div>
+            <p className="font-display text-sm tracking-display text-ink">{p.clienteNome}</p>
+            <p className="text-[11px] text-graphite/45">{p.clienteEmail}</p>
+          </div>
+          <div className="flex items-center gap-4">
+            <div className="text-right">
+              <p className="text-sm text-ink">{formatarPreco(p.valorTotal)}</p>
+              {p.stepsRastreio && p.stepsRastreio.length > 0 && (
+                <p className="text-[10px] text-graphite/40">
+                  {p.stepsRastreio.length} step{p.stepsRastreio.length > 1 ? "s" : ""}
+                </p>
+              )}
+            </div>
+            <span className={`rounded-full px-2.5 py-1 text-[10px] uppercase tracking-[0.08em] ${STATUS_COR[p.status]}`}>
+              {STATUS_LABEL[p.status]}
+            </span>
+            {aberto === p.id
+              ? <ChevronUp className="h-4 w-4 text-graphite/40" />
+              : <ChevronDown className="h-4 w-4 text-graphite/40" />}
+          </div>
+        </button>
+
+        {aberto === p.id && (
+          <div className="flex flex-col gap-6 border-t border-mist/30 px-5 py-5">
+
+            {/* itens */}
+            <div>
+              <p className="mb-2 text-[11px] uppercase tracking-[0.1em] text-graphite/45">Itens do pedido</p>
+              <ul className="flex flex-col gap-1">
+                {p.itens.map((item, i) => (
+                  <li key={i} className="flex justify-between text-sm text-graphite/75">
+                    <span>
+                      {item.quantidade}x {item.produtoNome}
+                      {item.tamanho ? ` — ${item.tamanho}` : ""}
+                    </span>
+                    <span>{formatarPreco(item.precoUnitario * item.quantidade)}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* status */}
+            <div className="flex flex-wrap items-center gap-2">
+              <p className="mr-2 text-[11px] uppercase tracking-[0.1em] text-graphite/45">Status</p>
+              {(Object.keys(STATUS_LABEL) as StatusPedido[]).map((s) => (
+                <button
+                  key={s}
+                  onClick={() => handleStatus(p, s)}
+                  className={`rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.08em] transition ${
+                    p.status === s ? "bg-ink text-white" : "bg-blush/60 text-graphite/55 hover:bg-blush"
+                  }`}
+                >
+                  {STATUS_LABEL[s]}
+                </button>
+              ))}
+            </div>
+
+            {/* código de rastreio */}
+            <div>
+              <p className="mb-2 text-[11px] uppercase tracking-[0.1em] text-graphite/45">Código de rastreio</p>
+              <div className="flex flex-wrap items-end gap-3">
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[11px] text-graphite/40">Transportadora</label>
+                  <input
+                    value={transportadoras[p.id] ?? ""}
+                    onChange={(e) => setTransportadoras((t) => ({ ...t, [p.id]: e.target.value }))}
+                    placeholder="Ex: Correios, Jadlog..."
+                    className="campo-input w-44"
+                  />
+                </div>
+                <div className="flex flex-1 flex-col gap-1.5">
+                  <label className="text-[11px] text-graphite/40">Código (cole da Shopee)</label>
+                  <input
+                    value={rastreios[p.id] ?? ""}
+                    onChange={(e) => setRastreios((r) => ({ ...r, [p.id]: e.target.value }))}
+                    placeholder="Cole aqui o código de rastreio"
+                    className="campo-input"
+                  />
+                </div>
+                <button
+                  onClick={() => handleSalvarRastreio(p)}
+                  disabled={salvandoId === p.id}
+                  className="flex items-center gap-2 rounded-xl bg-ink px-4 py-2.5 font-display text-sm tracking-display text-white transition hover:bg-plum disabled:opacity-50"
+                >
+                  {salvandoId === p.id ? "Salvando..." : <><Save className="h-4 w-4" /> Salvar</>}
+                </button>
+              </div>
+              {p.codigoRastreio && (
+                <p className="mt-2 flex items-center gap-1.5 text-xs text-graphite/45">
+                  <Truck className="h-3.5 w-3.5" />
+                  Código atual: <span className="font-mono font-medium text-ink">{p.codigoRastreio}</span>
+                  {p.transportadora ? ` · ${p.transportadora}` : ""}
+                </p>
+              )}
+            </div>
+
+            {/* steps de rastreio */}
+            <div className="rounded-2xl border border-mist/30 bg-blush/20 p-4">
+              <StepsEditor pedido={p} onSaved={carregar} />
+            </div>
+
+            {/* link público */}
+            {p.codigoRastreio && (
+              <div className="flex items-center gap-2 rounded-xl bg-plum/5 px-4 py-3">
+                <Package className="h-4 w-4 shrink-0 text-plum" />
+                <p className="text-xs text-graphite/60">
+                  Link público do cliente:{" "}
+                  <a
+                    href={`/rastreio/${p.codigoRastreio}`}
+                    target="_blank"
+                    className="font-medium text-plum hover:underline"
+                  >
+                    /rastreio/{p.codigoRastreio}
+                  </a>
+                </p>
+              </div>
+            )}
+
+          </div>
+        )}
+      </div>
+    );
+  }
+
   return (
     <div className="flex flex-col gap-6">
       <div>
@@ -283,137 +417,49 @@ export default function AdminVendasPage() {
           vão aparecer aqui automaticamente.
         </p>
       ) : (
-        <div className="flex flex-col gap-3">
-          {pedidos.map((p) => (
-            <div key={p.id} className="rounded-2xl border border-mist/40 bg-white">
-              <button
-                onClick={() => setAberto(aberto === p.id ? null : p.id)}
-                className="flex w-full flex-wrap items-center justify-between gap-3 px-5 py-4 text-left"
-              >
-                <div>
-                  <p className="font-display text-sm tracking-display text-ink">{p.clienteNome}</p>
-                  <p className="text-[11px] text-graphite/45">{p.clienteEmail}</p>
-                </div>
-                <div className="flex items-center gap-4">
-                  <div className="text-right">
-                    <p className="text-sm text-ink">{formatarPreco(p.valorTotal)}</p>
-                    {p.stepsRastreio && p.stepsRastreio.length > 0 && (
-                      <p className="text-[10px] text-graphite/40">
-                        {p.stepsRastreio.length} step{p.stepsRastreio.length > 1 ? "s" : ""}
-                      </p>
-                    )}
-                  </div>
-                  <span className={`rounded-full px-2.5 py-1 text-[10px] uppercase tracking-[0.08em] ${STATUS_COR[p.status]}`}>
-                    {STATUS_LABEL[p.status]}
-                  </span>
-                  {aberto === p.id
-                    ? <ChevronUp className="h-4 w-4 text-graphite/40" />
-                    : <ChevronDown className="h-4 w-4 text-graphite/40" />}
-                </div>
-              </button>
+        <>
+          {pedidosAtivos.length === 0 ? (
+            <p className="rounded-2xl border border-mist/40 bg-white p-6 text-sm text-graphite/60">
+              Nenhum pedido ativo no momento.
+            </p>
+          ) : (
+            <div className="flex flex-col gap-3">{pedidosAtivos.map(renderPedido)}</div>
+          )}
 
-              {aberto === p.id && (
-                <div className="flex flex-col gap-6 border-t border-mist/30 px-5 py-5">
-
-                  {/* itens */}
-                  <div>
-                    <p className="mb-2 text-[11px] uppercase tracking-[0.1em] text-graphite/45">Itens do pedido</p>
-                    <ul className="flex flex-col gap-1">
-                      {p.itens.map((item, i) => (
-                        <li key={i} className="flex justify-between text-sm text-graphite/75">
-                          <span>
-                            {item.quantidade}x {item.produtoNome}
-                            {item.tamanho ? ` — ${item.tamanho}` : ""}
-                          </span>
-                          <span>{formatarPreco(item.precoUnitario * item.quantidade)}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* status */}
-                  <div className="flex flex-wrap items-center gap-2">
-                    <p className="mr-2 text-[11px] uppercase tracking-[0.1em] text-graphite/45">Status</p>
-                    {(Object.keys(STATUS_LABEL) as StatusPedido[]).map((s) => (
-                      <button
-                        key={s}
-                        onClick={() => handleStatus(p, s)}
-                        className={`rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.08em] transition ${
-                          p.status === s ? "bg-ink text-white" : "bg-blush/60 text-graphite/55 hover:bg-blush"
-                        }`}
-                      >
-                        {STATUS_LABEL[s]}
-                      </button>
-                    ))}
-                  </div>
-
-                  {/* código de rastreio */}
-                  <div>
-                    <p className="mb-2 text-[11px] uppercase tracking-[0.1em] text-graphite/45">Código de rastreio</p>
-                    <div className="flex flex-wrap items-end gap-3">
-                      <div className="flex flex-col gap-1.5">
-                        <label className="text-[11px] text-graphite/40">Transportadora</label>
-                        <input
-                          value={transportadoras[p.id] ?? ""}
-                          onChange={(e) => setTransportadoras((t) => ({ ...t, [p.id]: e.target.value }))}
-                          placeholder="Ex: Correios, Jadlog..."
-                          className="campo-input w-44"
-                        />
-                      </div>
-                      <div className="flex flex-1 flex-col gap-1.5">
-                        <label className="text-[11px] text-graphite/40">Código (cole da Shopee)</label>
-                        <input
-                          value={rastreios[p.id] ?? ""}
-                          onChange={(e) => setRastreios((r) => ({ ...r, [p.id]: e.target.value }))}
-                          placeholder="Cole aqui o código de rastreio"
-                          className="campo-input"
-                        />
-                      </div>
-                      <button
-                        onClick={() => handleSalvarRastreio(p)}
-                        disabled={salvandoId === p.id}
-                        className="flex items-center gap-2 rounded-xl bg-ink px-4 py-2.5 font-display text-sm tracking-display text-white transition hover:bg-plum disabled:opacity-50"
-                      >
-                        {salvandoId === p.id ? "Salvando..." : <><Save className="h-4 w-4" /> Salvar</>}
-                      </button>
-                    </div>
-                    {p.codigoRastreio && (
-                      <p className="mt-2 flex items-center gap-1.5 text-xs text-graphite/45">
-                        <Truck className="h-3.5 w-3.5" />
-                        Código atual: <span className="font-mono font-medium text-ink">{p.codigoRastreio}</span>
-                        {p.transportadora ? ` · ${p.transportadora}` : ""}
-                      </p>
-                    )}
-                  </div>
-
-                  {/* steps de rastreio */}
-                  <div className="rounded-2xl border border-mist/30 bg-blush/20 p-4">
-                    <StepsEditor pedido={p} onSaved={carregar} />
-                  </div>
-
-                  {/* link público */}
-                  {p.codigoRastreio && (
-                    <div className="flex items-center gap-2 rounded-xl bg-plum/5 px-4 py-3">
-                      <Package className="h-4 w-4 shrink-0 text-plum" />
-                      <p className="text-xs text-graphite/60">
-                        Link público do cliente:{" "}
-                        <a
-                          href={`/rastreio/${p.codigoRastreio}`}
-                          target="_blank"
-                          className="font-medium text-plum hover:underline"
-                        >
-                          /rastreio/{p.codigoRastreio}
-                        </a>
-                      </p>
-                    </div>
-                  )}
-
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
+          {pedidosCancelados.length > 0 && (
+            <CanceladosSection pedidos={pedidosCancelados} render={renderPedido} />
+          )}
+        </>
       )}
+    </div>
+  );
+}
+
+function CanceladosSection({
+  pedidos,
+  render,
+}: {
+  pedidos: Pedido[];
+  render: (p: Pedido) => ReactNode;
+}) {
+  const [aberto, setAberto] = useState(false);
+
+  return (
+    <div className="rounded-2xl border border-dashed border-mist/50">
+      <button
+        onClick={() => setAberto((v) => !v)}
+        className="flex w-full items-center justify-between px-5 py-4 text-left"
+      >
+        <p className="text-[11px] uppercase tracking-[0.1em] text-graphite/45">
+          Cancelados · {pedidos.length}
+        </p>
+        {aberto ? (
+          <ChevronUp className="h-4 w-4 text-graphite/40" />
+        ) : (
+          <ChevronDown className="h-4 w-4 text-graphite/40" />
+        )}
+      </button>
+      {aberto && <div className="flex flex-col gap-3 border-t border-mist/30 px-5 py-5">{pedidos.map(render)}</div>}
     </div>
   );
 }

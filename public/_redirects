@@ -1,0 +1,11 @@
+# Cloudflare Pages serve arquivos estáticos diretamente; rotas dinâmicas do
+# Next (output: export) só têm UM arquivo HTML pré-gerado por rota
+# ([codigo]/page.tsx gera apenas /rastreio/placeholder/index.html). Sem esta
+# regra, qualquer código de rastreio real (ex: /rastreio/ABC123) recebe 404
+# puro do Cloudflare antes mesmo do React rodar.
+#
+# O status 200 (rewrite, não redirect) é essencial: a URL no navegador
+# continua sendo /rastreio/ABC123, e o RastreioClient lê o código real via
+# useParams() no client-side — exatamente o mesmo padrão já usado para
+# resolver o pedido certo no Firestore.
+/rastreio/*  /rastreio/placeholder/index.html  200
