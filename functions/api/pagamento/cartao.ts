@@ -60,15 +60,22 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       aprovado,
     });
   } catch (err) {
-    console.error("Erro ao criar pagamento com cartão:", err);
+    const mpErr = err as { mpResponse?: { message?: string; cause?: unknown }; status?: number };
+    console.error("Erro ao criar pagamento com cartão:", {
+      status: mpErr.status,
+      mpResponse: mpErr.mpResponse,
+      message: (err as Error)?.message,
+    });
 
     // Erros do Mercado Pago costumam vir com uma mensagem útil pro
     // comprador entender por que a transação foi recusada — repassamos
     // ela em vez de só um erro genérico.
-    const mpErr = err as { mpResponse?: { message?: string }; status?: number };
     const mensagem =
       mpErr.mpResponse?.message ?? "Não foi possível processar o pagamento. Verifique os dados do cartão.";
 
-    return Response.json({ erro: mensagem }, { status: mpErr.status === 400 ? 400 : 500 });
+    return Response.json(
+      { erro: mensagem, detalhes: mpErr.mpResponse ?? null },
+      { status: mpErr.status === 400 ? 400 : 500 }
+    );
   }
 };

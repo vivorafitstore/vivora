@@ -44,6 +44,7 @@ export function PagamentoCartao({ pedidoId, valor, email, onAprovado }: Props) {
       const data = await res.json();
 
       if (!res.ok || data.erro) {
+        console.error("Erro retornado por /api/pagamento/cartao:", res.status, JSON.stringify(data, null, 2));
         setErro(data.erro ?? "Pagamento recusado. Verifique os dados do cartão.");
         setEnviando(false);
         return;
