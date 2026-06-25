@@ -17,11 +17,14 @@ service cloud.firestore {
     }
 
     match /pedidos/{id} {
-      // Admin tem acesso total. Cliente só lê o próprio pedido e só pode
-      // criar pedidos vinculados ao próprio uid (clienteId == seu uid) —
-      // nunca atualizar ou deletar.
+      // Admin tem acesso total. Cliente logado lê o próprio pedido.
+      // Leitura pública (sem login) é permitida SOMENTE quando o pedido já
+      // tem um código de rastreio cadastrado — é o que a página pública
+      // /rastreio/[codigo] usa, e só quem tem o link/código em mãos
+      // consegue de fato chegar a esse pedido (não é uma listagem aberta).
       allow read: if ehAdmin() ||
-        (request.auth != null && resource.data.clienteId == request.auth.uid);
+        (request.auth != null && resource.data.clienteId == request.auth.uid) ||
+        (resource.data.codigoRastreio is string && resource.data.codigoRastreio.size() > 0);
       allow create: if ehAdmin() ||
         (request.auth != null && request.resource.data.clienteId == request.auth.uid);
       allow update, delete: if ehAdmin();
