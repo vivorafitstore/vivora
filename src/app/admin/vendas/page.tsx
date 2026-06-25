@@ -133,60 +133,74 @@ function StepsEditor({ pedido, onSaved }: { pedido: Pedido; onSaved: () => void 
       </div>
 
       {steps.length === 0 ? (
-        <p className="rounded-xl border border-dashed border-mist/60 p-4 text-center text-xs text-graphite/40">
-          Nenhum step adicionado ainda. Clique em &quot;Adicionar step&quot; para começar.
-        </p>
+        <button
+          onClick={() => setShowPresets(true)}
+          className="flex w-full flex-col items-center gap-2 rounded-xl border border-dashed border-mist/60 p-8 text-center transition hover:border-rose/40 hover:bg-blush/20"
+        >
+          <span className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-mist/60 text-mist/80">
+            <Plus className="h-4 w-4" />
+          </span>
+          <span className="text-xs text-graphite/40">
+            Nenhum step adicionado ainda. Clique para começar.
+          </span>
+        </button>
       ) : (
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col">
           {steps.map((step, i) => (
-            <div
-              key={step.id}
-              className="relative flex gap-3 rounded-xl border border-mist/40 bg-blush/30 p-4"
-            >
-              {/* linha vertical de timeline */}
-              <div className="flex flex-col items-center gap-1 pt-1">
-                <div
-                  className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-[10px] font-semibold text-white"
-                  style={{ background: i === 0 ? "#4a1f5c" : i === steps.length - 1 ? "#d6486f" : "#cdb9c4" }}
+            <div key={step.id} className="group flex gap-4">
+              {/* coluna da timeline: bolinha com + e traço pontilhado */}
+              <div className="flex flex-col items-center">
+                <span
+                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 text-sm"
+                  style={{
+                    borderColor: i === steps.length - 1 ? "#d6486f" : "#cdb9c4",
+                    color: i === steps.length - 1 ? "#d6486f" : "#8a7a85",
+                  }}
                 >
-                  {i + 1}
-                </div>
+                  <Plus className="h-4 w-4" strokeWidth={2.5} />
+                </span>
                 {i < steps.length - 1 && (
-                  <div className="w-px flex-1 bg-mist/60" style={{ minHeight: 16 }} />
+                  <div
+                    className="my-1 w-px flex-1 border-l-2 border-dotted"
+                    style={{ borderColor: "#cdb9c4", minHeight: 28 }}
+                  />
                 )}
               </div>
 
-              <div className="flex flex-1 flex-col gap-2">
-                <div className="flex gap-2">
+              {/* conteúdo: título e descrição com visual de texto, não de formulário */}
+              <div className="flex flex-1 flex-col gap-1 pb-7">
+                <div className="flex items-start gap-2">
                   <input
                     value={step.etapa}
                     onChange={(e) => updateField(step.id, "etapa", e.target.value)}
-                    placeholder="Etapa (ex: Em trânsito)"
-                    className="campo-input flex-1 font-medium"
+                    placeholder="Adicionar título"
+                    className="flex-1 bg-transparent font-display text-base tracking-display text-ink outline-none placeholder:text-graphite/30 focus:border-b focus:border-rose/40"
                   />
                   <button
                     onClick={() => removeStep(step.id)}
-                    className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-graphite/30 transition hover:bg-rose/10 hover:text-rose-deep"
+                    className="shrink-0 text-graphite/0 transition group-hover:text-graphite/30 hover:!text-rose-deep"
                   >
-                    <Trash2 className="h-4 w-4" />
+                    <Trash2 className="h-3.5 w-3.5" />
                   </button>
                 </div>
                 <input
                   value={step.descricao}
                   onChange={(e) => updateField(step.id, "descricao", e.target.value)}
-                  placeholder="Descrição (ex: Objeto encaminhado para distribuição)"
-                  className="campo-input"
+                  placeholder="Adicionar descrição"
+                  className="bg-transparent text-sm text-graphite/55 outline-none placeholder:text-graphite/30 focus:border-b focus:border-rose/40"
                 />
-                <div className="flex items-center gap-1.5">
-                  <MapPin className="h-3.5 w-3.5 shrink-0 text-graphite/30" />
-                  <input
-                    value={step.local}
-                    onChange={(e) => updateField(step.id, "local", e.target.value)}
-                    placeholder="Local (ex: São Paulo - SP)"
-                    className="campo-input"
-                  />
+                <div className="mt-1.5 flex flex-wrap items-center gap-3">
+                  <div className="flex items-center gap-1.5">
+                    <MapPin className="h-3 w-3 shrink-0 text-graphite/30" />
+                    <input
+                      value={step.local}
+                      onChange={(e) => updateField(step.id, "local", e.target.value)}
+                      placeholder="Local"
+                      className="w-32 bg-transparent text-xs text-graphite/45 outline-none placeholder:text-graphite/30 focus:border-b focus:border-rose/40"
+                    />
+                  </div>
+                  <p className="text-[10px] text-graphite/35">{formatarData(step.criadoEm)}</p>
                 </div>
-                <p className="text-[10px] text-graphite/35">{formatarData(step.criadoEm)}</p>
               </div>
             </div>
           ))}

@@ -162,7 +162,10 @@ export function RastreioClient() {
                               : <div className="h-2 w-2 rounded-full bg-mist" />}
                           </div>
                           {!isLast && (
-                            <div className="my-1 w-px flex-1 bg-mist/50" style={{ minHeight: 24 }} />
+                            <div
+                              className="my-1 w-px flex-1 border-l-2 border-dotted"
+                              style={{ borderColor: "#cdb9c4", minHeight: 24 }}
+                            />
                           )}
                         </div>
 
