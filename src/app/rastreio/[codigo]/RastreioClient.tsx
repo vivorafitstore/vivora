@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Package, MapPin, CheckCircle, Clock, ExternalLink, ChevronRight } from "lucide-react";
+import { Package, MapPin, CheckCircle2, Circle, ChevronRight, Truck } from "lucide-react";
 import { obterPedidoPorRastreio } from "@/lib/firestore-pedidos";
 import { Pedido, StepRastreio } from "@/lib/types";
 
@@ -13,6 +13,14 @@ const STATUS_LABEL: Record<string, string> = {
   entregue: "Entregue",
   cancelado: "Cancelado",
 };
+
+// Ordem de progresso para a barra visual — cancelado fica fora da escala.
+const PROGRESSO_ORDEM = ["pendente", "pago", "enviado", "entregue"];
+
+function indiceProgresso(status: string): number {
+  const i = PROGRESSO_ORDEM.indexOf(status);
+  return i === -1 ? 0 : i;
+}
 
 function formatarData(ts: number) {
   return new Date(ts).toLocaleString("pt-BR", {
@@ -46,16 +54,9 @@ export function RastreioClient() {
 
   useEffect(() => {
     if (!codigoDecoded) return;
-    console.log("[rastreio] buscando pedido com codigoRastreio =", JSON.stringify(codigoDecoded));
     obterPedidoPorRastreio(codigoDecoded)
-      .then((p) => {
-        console.log("[rastreio] resultado da busca:", p);
-        setPedido(p ?? "not-found");
-      })
-      .catch((err) => {
-        console.error("[rastreio] erro na busca:", err);
-        setPedido("not-found");
-      })
+      .then((p) => setPedido(p ?? "not-found"))
+      .catch(() => setPedido("not-found"))
       .finally(() => setLoading(false));
   }, [codigoDecoded]);
 
@@ -104,59 +105,77 @@ export function RastreioClient() {
         {!loading && pedido && pedido !== "not-found" && (
           <div className="flex flex-col gap-5">
 
-            {/* card resumo */}
-            <div className="rounded-2xl border border-mist/40 bg-white p-5">
-              <div className="flex items-start justify-between gap-4">
-                <div>
-                  <p className="font-display text-base tracking-display text-ink">{pedido.clienteNome}</p>
-                  <p className="mt-0.5 text-xs text-graphite/45">{pedido.clienteEmail}</p>
+            {/* card de status com barra de progresso */}
+            <div className="overflow-hidden rounded-2xl border border-mist/40 bg-white">
+              <div className="bg-gradient-to-br from-ink to-plum px-6 py-6 text-white">
+                <div className="flex items-start justify-between gap-4">
+                  <div className="flex items-center gap-3">
+                    <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white/15">
+                      <Truck className="h-5 w-5" />
+                    </span>
+                    <div>
+                      <p className="text-[11px] uppercase tracking-[0.15em] text-white/60">
+                        Status atual
+                      </p>
+                      <p className="font-display text-lg tracking-display">
+                        {STATUS_LABEL[pedido.status] ?? pedido.status}
+                      </p>
+                    </div>
+                  </div>
+                  {pedido.transportadora && (
+                    <span className="shrink-0 rounded-full bg-white/15 px-3 py-1 text-[10px] uppercase tracking-[0.08em]">
+                      {pedido.transportadora}
+                    </span>
+                  )}
                 </div>
-                <span
-                  className="shrink-0 rounded-full px-3 py-1 text-[10px] uppercase tracking-[0.08em]"
-                  style={{
-                    background: pedido.status === "entregue" ? "#fde8ef" : pedido.status === "enviado" ? "#f0ebf5" : "#f7eef1",
-                    color: pedido.status === "entregue" ? "#b22f56" : pedido.status === "enviado" ? "#4a1f5c" : "#2b232f99",
-                  }}
-                >
-                  {STATUS_LABEL[pedido.status] ?? pedido.status}
-                </span>
+
+                {pedido.status !== "cancelado" && (
+                  <div className="mt-6 flex items-center gap-1.5">
+                    {PROGRESSO_ORDEM.map((s, i) => (
+                      <div
+                        key={s}
+                        className="h-1.5 flex-1 rounded-full transition-colors"
+                        style={{
+                          background:
+                            i <= indiceProgresso(pedido.status) ? "#fff" : "rgba(255,255,255,0.2)",
+                        }}
+                      />
+                    ))}
+                  </div>
+                )}
+                {pedido.status !== "cancelado" && (
+                  <div className="mt-2 flex justify-between text-[10px] uppercase tracking-[0.06em] text-white/50">
+                    {PROGRESSO_ORDEM.map((s) => (
+                      <span key={s}>{STATUS_LABEL[s]}</span>
+                    ))}
+                  </div>
+                )}
               </div>
 
-              {pedido.transportadora && (
-                <p className="mt-3 text-xs text-graphite/45">
-                  Transportadora:{" "}
-                  <span className="font-medium text-graphite/70">{pedido.transportadora}</span>
-                </p>
-              )}
-
-              <a
-                href={`https://rastreamento.correios.com.br/app/index.php?objetos=${codigoDecoded}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-4 flex items-center gap-2 rounded-xl border border-mist/40 px-4 py-2.5 text-xs text-graphite/60 transition hover:border-plum/40 hover:text-plum"
-              >
-                <ExternalLink className="h-3.5 w-3.5" />
-                Rastrear também nos Correios
-              </a>
+              <div className="flex items-center justify-between gap-4 px-6 py-4">
+                <div>
+                  <p className="font-display text-sm tracking-display text-ink">{pedido.clienteNome}</p>
+                  <p className="text-xs text-graphite/45">{pedido.clienteEmail}</p>
+                </div>
+                <p className="font-mono text-xs text-graphite/40">{codigoDecoded}</p>
+              </div>
             </div>
 
             {/* timeline */}
             {steps.length === 0 ? (
               <div className="rounded-2xl border border-mist/40 bg-white p-6 text-center">
-                <Clock className="mx-auto mb-3 h-8 w-8 text-mist" />
+                <Package className="mx-auto mb-3 h-8 w-8 text-mist" />
                 <p className="font-display text-base tracking-display text-ink">Rastreio em breve</p>
                 <p className="mt-2 text-sm text-graphite/55">
                   Seu pedido foi recebido! Assim que for postado, as atualizações de rastreio
-                  aparecerão aqui. Enquanto isso, você pode usar o código abaixo diretamente no
-                  site da transportadora.
-                </p>
-                <p className="mt-4 rounded-xl bg-blush px-4 py-3 font-mono text-sm font-medium text-ink">
-                  {codigoDecoded}
+                  aparecerão aqui.
                 </p>
               </div>
             ) : (
-              <div className="rounded-2xl border border-mist/40 bg-white p-5">
-                <p className="mb-5 text-[11px] uppercase tracking-[0.1em] text-graphite/45">Atualizações</p>
+              <div className="rounded-2xl border border-mist/40 bg-white p-6">
+                <p className="mb-6 text-[11px] uppercase tracking-[0.1em] text-graphite/45">
+                  Histórico de atualizações
+                </p>
                 <div className="flex flex-col">
                   {[...steps].reverse().map((step, i, arr) => {
                     const isFirst = i === 0;
@@ -164,49 +183,62 @@ export function RastreioClient() {
                     return (
                       <div key={step.id} className="flex gap-4">
                         <div className="flex flex-col items-center">
-                          <div
-                            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full"
+                          <span
+                            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full"
                             style={{
-                              background: isFirst ? "#4a1f5c" : "#f7eef1",
-                              border: isFirst ? "none" : "2px solid #cdb9c4",
+                              background: "#4a1f5c",
+                              boxShadow: isFirst ? "0 0 0 4px rgba(74,31,92,0.12)" : "none",
                             }}
                           >
-                            {isFirst
-                              ? <CheckCircle className="h-4 w-4 text-white" />
-                              : <div className="h-2 w-2 rounded-full bg-mist" />}
-                          </div>
-                          {!isLast && (
-                            <div
-                              className="my-1 w-px flex-1 border-l-2 border-dotted"
-                              style={{ borderColor: "#cdb9c4", minHeight: 24 }}
-                            />
-                          )}
+                            {isFirst ? (
+                              <CheckCircle2 className="h-4.5 w-4.5 text-white" strokeWidth={2.2} />
+                            ) : (
+                              <Circle className="h-2.5 w-2.5 fill-white text-white" />
+                            )}
+                          </span>
+                          {!isLast && <div className="my-1 w-0.5 flex-1 bg-plum/25" style={{ minHeight: 32 }} />}
                         </div>
 
-                        <div className={`${isLast ? "pb-0" : "pb-6"}`}>
-                          <p
-                            className="font-display text-sm tracking-display"
-                            style={{ color: isFirst ? "#4a1f5c" : "#2b232f" }}
-                          >
-                            {step.etapa}
-                          </p>
-                          {step.descricao && (
-                            <p className="mt-0.5 text-sm text-graphite/60">{step.descricao}</p>
-                          )}
-                          <div className="mt-1.5 flex flex-wrap items-center gap-3">
-                            {step.local && (
-                              <span className="flex items-center gap-1 text-[11px] text-graphite/40">
-                                <MapPin className="h-3 w-3" /> {step.local}
-                              </span>
-                            )}
-                            <span className="text-[11px] text-graphite/35">
+                        <div className={`${isLast ? "pb-0" : "pb-7"} pt-1`}>
+                          <div className="flex flex-wrap items-baseline gap-2">
+                            <p
+                              className="font-display text-base tracking-display"
+                              style={{ color: isFirst ? "#4a1f5c" : "#2b232f" }}
+                            >
+                              {step.etapa}
+                            </p>
+                            <span className="text-[11px] text-graphite/40">
                               {formatarData(step.criadoEm)}
                             </span>
                           </div>
+                          {step.descricao && (
+                            <p className="mt-1 text-sm text-graphite/60">{step.descricao}</p>
+                          )}
+                          {step.local && (
+                            <span className="mt-1.5 flex items-center gap-1 text-[11px] text-graphite/40">
+                              <MapPin className="h-3 w-3" /> {step.local}
+                            </span>
+                          )}
                         </div>
                       </div>
                     );
                   })}
+
+                  {/* etapa final implícita, em cinza, quando ainda não chegou */}
+                  {pedido.status !== "entregue" && pedido.status !== "cancelado" && (
+                    <div className="flex gap-4">
+                      <div className="flex flex-col items-center">
+                        <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 border-dashed border-mist/60">
+                          <Circle className="h-2.5 w-2.5 text-mist/60" />
+                        </span>
+                      </div>
+                      <div className="pt-2">
+                        <p className="font-display text-base tracking-display text-graphite/35">
+                          Entrega realizada
+                        </p>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
